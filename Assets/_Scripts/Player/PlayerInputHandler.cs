@@ -11,8 +11,8 @@ public class PlayerInputHandler
         return Vector2Int.zero;
     }
 
-    //public bool ReadJumpInput()
-    //{
-    //    return Input.GetKeyDown(KeyCode.Space);
-    //}
+    public bool ReadJumpInput()
+    {
+        return Input.GetKeyDown(KeyCode.Space);
+    }
 }

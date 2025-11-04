@@ -66,10 +66,9 @@ public class PlayerMovement
         float total = _gridManager.GetCellSize() + _gridManager.GetSpacing();
         Vector3 origin = _gridManager.GetGridOrigin();
 
-        // ⚡ Không offset, chỉ nhân đúng tọa độ gốc
         return new Vector3(
             gridPos.x * total + origin.x,
-            0.5f,
+            0f,
             gridPos.y * total + origin.z);
     }
 }
