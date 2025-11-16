@@ -8866,10 +8866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba30fc6514cc7b4fa901320c67fad3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridManager: {fileID: 1737474088}
   animator: {fileID: 1057061846}
-  moveSpeed: 0.7
-  startGridPos: {x: 0, y: 0}
+  moveSpeed: 1.5
 --- !u!95 &1057061846 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4083228948976958151, guid: a9ae4fe79786439439b7419b3647950d, type: 3}
