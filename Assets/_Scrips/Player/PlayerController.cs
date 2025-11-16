@@ -1,31 +1,50 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb;
-    [SerializeField] private float _moveSpeed = 5f;
-    //[SerializeField] private float _lookSpeed = 5f;
+    [SerializeField] private Animator animator;
+    [SerializeField] private float _moveSpeed = 4f;
+    [SerializeField] private float runMultiplier = 1.6f;
+
     private Vector3 _input;
 
     private void Update()
     {
         GatherInput();
         Look();
+
+        // ---- Animation ----
+        float targetSpeed = 0f;
+
+        if (_input.sqrMagnitude > 0.01f)
+        {
+            // Đi bộ
+            targetSpeed = 0.5f;
+
+            // Nhấn shift → chạy
+            if (Input.GetKey(KeyCode.LeftShift))
+                targetSpeed = 1f;
+        }
+
+        // Chuyển từ từ
+        float smoothSpeed = Mathf.Lerp(animator.GetFloat("Speed"), targetSpeed, Time.deltaTime * 8f);
+        animator.SetFloat("Speed", smoothSpeed);
     }
+
 
     private void FixedUpdate()
     {
         Move();
     }
 
-    void Look() 
+    void Look()
     {
-        if (_input != Vector3.zero) 
+        if (_input.sqrMagnitude > 0.01f)
         {
-            var relative = (transform.position + _input.ToIsometric()) - transform.position;
-            var rotation = Quaternion.LookRotation(relative, Vector3.up);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
+            Vector3 lookDir = _input.ToIsometric();
+            Quaternion targetRot = Quaternion.LookRotation(lookDir, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 0.2f);
         }
     }
 
@@ -33,11 +52,23 @@ public class PlayerController : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        _input = new Vector3(h, 0f, v).normalized;
+
+        _input = new Vector3(h, 0, v).normalized;
     }
 
-    void Move() 
+    void Move()
     {
-        _rb.MovePosition(transform.position + (transform.forward * _input.magnitude) * _moveSpeed * Time.deltaTime);
+        if (_input.sqrMagnitude > 0.01f)
+        {
+            // Get blend speed
+            float animSpeed = animator.GetFloat("Speed");
+
+            // Từ 0.5 - 1 → scale thành chạy
+            float realSpeed = Mathf.Lerp(_moveSpeed, _moveSpeed * runMultiplier, animSpeed);
+
+            Vector3 move = _input.ToIsometric() * realSpeed * Time.deltaTime;
+            _rb.MovePosition(transform.position + move);
+        }
     }
+
 }
