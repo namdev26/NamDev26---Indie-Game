@@ -1598,7 +1598,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1658233112}
         m_TargetAssemblyTypeName: MapManager, Assembly-CSharp
-        m_MethodName: ActivateSoilMode
+        m_MethodName: ToggleSoilMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1666,6 +1666,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1658233113}
   - component: {fileID: 1658233112}
+  - component: {fileID: 1658233114}
   m_Layer: 0
   m_Name: Map Manager
   m_TagString: Untagged
@@ -1689,8 +1690,8 @@ MonoBehaviour:
   height: 20
   cellSize: 1.05
   origin: {x: 0, y: 0, z: 0}
-  grassPrefab: {fileID: 4681013950057411509, guid: 5e0c1f9acbae75646acfc0acd1c80215, type: 3}
-  soilPrefab: {fileID: 242790451647615861, guid: 2495548d12b807f41a9592db6a33592f, type: 3}
+  chunkSize: 16
+  terrainMaterial: {fileID: 2100000, guid: 4e1b3270453ecbe40bd5e9c324a5e871, type: 2}
   currentMode: 0
 --- !u!4 &1658233113
 Transform:
@@ -1707,6 +1708,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1658233114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658233111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c005010ff81e9d4b886440e32a3d020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunkX: 0
+  chunkZ: 0
+  startX: 0
+  startZ: 0
+  chunkSize: 0
+  cellSize: 0
+  map: {fileID: 1658233112}
 --- !u!1 &1662305059
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,131 +1,101 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class MapManager : MonoBehaviour
 {
-    [Header("Map Settings")]
-    public int width = 20;
-    public int height = 20;
-    public float cellSize = 1.1f;
+    public int width = 30;
+    public int height = 30;
+
+    public Color grassColor = new Color(0.8f, 1f, 0.8f);
+    public Color soilColor = new Color(0.6f, 0.4f, 0.2f);
+    public Color hoverColor = new Color(1f, 1f, 0.7f);
+
+    public Vector2Int hoverTile = new Vector2Int(-1, -1);
+
+    public float cellSize = 1f;
     public Vector3 origin = Vector3.zero;
 
-    [Header("Prefabs")]
-    public GameObject grassPrefab;
-    public GameObject soilPrefab;
+    public Material terrainMaterial;
 
-    private TileData[,] grid;
+    public enum TileType { Grass, Soil }
+    public TileType[,] map;
 
-    public enum EditMode
-    {
-        None,
-        SoilMode
-    }
+    private MapMesh mesh;
 
+    public enum EditMode { None, SoilMode }
     public EditMode currentMode = EditMode.None;
 
     void Start()
     {
-        GenerateMap();
-        Debug.Log("=== Map Generated ===");
+        // init map
+        map = new TileType[width, height];
+        for (int x = 0; x < width; x++)
+            for (int z = 0; z < height; z++)
+                map[x, z] = TileType.Grass;
+
+        mesh = gameObject.AddComponent<MapMesh>();
+        mesh.Init(this);
     }
 
     void Update()
     {
+        if (currentMode == EditMode.SoilMode)
+            DetectHoverTile();
+        else
+            ClearHover();
+
         if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("CLICK DETECTED - Mode: " + currentMode);
-            HandleTileClick();
-        }
+            ApplySoil();
     }
 
-    void GenerateMap()
+    private void DetectHoverTile()
     {
-        grid = new TileData[width, height];
-
-        for (int x = 0; x < width; x++)
-        {
-            for (int z = 0; z < height; z++)
-            {
-                Vector3 pos = new Vector3(
-                    origin.x + x * cellSize,
-                    origin.y,
-                    origin.z + z * cellSize
-                );
-
-                GameObject tileObj = Instantiate(grassPrefab, pos, Quaternion.identity, transform);
-
-                TileData td = tileObj.GetComponent<TileData>();
-                td.x = x;
-                td.z = z;
-
-                grid[x, z] = td;
-
-                Debug.Log($"Tile Created [{x},{z}] at {pos}");
-            }
-        }
-    }
-
-    void HandleTileClick()
-    {
-        if (currentMode == EditMode.None)
-        {
-            Debug.Log("Click ignored: NO MODE SELECTED");
-            return;
-        }
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 200f))
+        if (!Physics.Raycast(ray, out RaycastHit hit, 200f))
         {
-            Debug.Log("Raycast HIT: " + hit.collider.name + " at world pos: " + hit.point);
-
-            TileData tile = hit.collider.GetComponent<TileData>();
-
-            if (tile == null)
-            {
-                Debug.Log("❌ Hit object has NO TileData");
-                return;
-            }
-
-            Debug.Log($"TileData FOUND: tile({tile.x},{tile.z}), occupied={tile.occupied}");
-
-            switch (currentMode)
-            {
-                case EditMode.SoilMode:
-                    ConvertGrassToSoil(tile);
-                    break;
-            }
-        }
-        else
-        {
-            Debug.Log("❌ Raycast hit NOTHING");
-        }
-    }
-
-    void ConvertGrassToSoil(TileData tile)
-    {
-        Debug.Log($"--- Converting Tile [{tile.x},{tile.z}] to SOIL ---");
-
-        if (tile.occupied)
-        {
-            Debug.Log("❌ Tile already occupied");
+            ClearHover();
             return;
         }
 
-        GameObject soil = Instantiate(soilPrefab, tile.transform.position, Quaternion.identity);
-        tile.occupied = true;
-        tile.occupant = soil;
+        Vector3 p = hit.point;
 
-        Debug.Log($"✔ Tile [{tile.x},{tile.z}] converted SUCCESSFULLY");
+        int x = Mathf.FloorToInt((p.x - origin.x) / cellSize);
+        int z = Mathf.FloorToInt((p.z - origin.z) / cellSize);
 
-        Destroy(tile.gameObject);
+        if (x < 0 || x >= width || z < 0 || z >= height)
+        {
+            ClearHover();
+            return;
+        }
+
+        hoverTile = new Vector2Int(x, z);
+        mesh.UpdateHoverTile();
     }
 
-    // BUTTON CALL
-    public void ActivateSoilMode()
+    private void ClearHover()
     {
-        currentMode = EditMode.SoilMode;
-        Debug.Log("=== Soil Mode Enabled ===");
+        hoverTile = new Vector2Int(-1, -1);
+        mesh.UpdateHoverTile();
+    }
+
+    private void ApplySoil()
+    {
+        if (hoverTile.x == -1) return;
+
+        map[hoverTile.x, hoverTile.y] = TileType.Soil;
+
+        mesh.UpdateTileColor(hoverTile.x, hoverTile.y);
+    }
+
+    public void ToggleSoilMode()
+    {
+        currentMode =
+            currentMode == EditMode.SoilMode ?
+            EditMode.None :
+            EditMode.SoilMode;
+
+        if (currentMode == EditMode.None)
+            ClearHover();
     }
 }
