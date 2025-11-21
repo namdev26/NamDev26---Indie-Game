@@ -47,13 +47,13 @@ public class MapMesh : MonoBehaviour
         {
             for (int z = 0; z < h; z++)
             {
-                float px = map.Origin.x + x * config.cellSize;
-                float pz = map.Origin.z + z * config.cellSize;
+                float px = map.Origin.x + x * config.tileSize;
+                float pz = map.Origin.z + z * config.tileSize;
 
                 vertices[v + 0] = new Vector3(px, 0, pz);
-                vertices[v + 1] = new Vector3(px + config.cellSize, 0, pz);
-                vertices[v + 2] = new Vector3(px, 0, pz + config.cellSize);
-                vertices[v + 3] = new Vector3(px + config.cellSize, 0, pz + config.cellSize);
+                vertices[v + 1] = new Vector3(px + config.tileSize, 0, pz);
+                vertices[v + 2] = new Vector3(px, 0, pz + config.tileSize);
+                vertices[v + 3] = new Vector3(px + config.tileSize, 0, pz + config.tileSize);
 
                 colors[v + 0] = config.grassColor;
                 colors[v + 1] = config.grassColor;

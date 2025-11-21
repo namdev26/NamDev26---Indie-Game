@@ -3,11 +3,24 @@ using UnityEngine;
 public class FarmUI : MonoBehaviour
 {
     [SerializeField] private MapManager map;
+    [SerializeField] private PlantManager plantManager;
+
+    [Header("Plant Types")]
+    //[SerializeField] private PlantData tomatoData;
+    [SerializeField] private PlantData carrotData;
+    //[SerializeField] private PlantData cabbageData;
 
     private readonly CreateSoilTool createSoilTool = new CreateSoilTool();
     private readonly RemoveSoilTool removeSoilTool = new RemoveSoilTool();
-    private readonly PlantTool plantTool = new PlantTool();
 
+    private HarvestTool harvestTool;
+
+    private void Start()
+    {
+        harvestTool = new HarvestTool(plantManager);
+    }
+
+    // ===== SOIL TOOLS =====
     public void SelectCreateSoil()
     {
         map.SetTool(createSoilTool);
@@ -20,12 +33,33 @@ public class FarmUI : MonoBehaviour
         Debug.Log("Tool: Remove Soil");
     }
 
-    public void SelectPlant()
+    // ===== PLANT TOOLS =====
+    //public void SelectPlantTomato()
+    //{
+    //    map.SetTool(new PlantTool(plantManager, tomatoData));
+    //    Debug.Log("Tool: Plant Tomato");
+    //}
+
+    public void SelectPlantCarrot()
     {
-        map.SetTool(plantTool);
-        Debug.Log("Tool: Plant");
+        map.SetTool(new PlantTool(plantManager, carrotData));
+        Debug.Log("Tool: Plant Carrot");
     }
 
+    //public void SelectPlantCabbage()
+    //{
+    //    map.SetTool(new PlantTool(plantManager, cabbageData));
+    //    Debug.Log("Tool: Plant Cabbage");
+    //}
+
+    // ===== HARVEST TOOL =====
+    public void SelectHarvest()
+    {
+        map.SetTool(harvestTool);
+        Debug.Log("Tool: Harvest");
+    }
+
+    // ===== NONE =====
     public void SelectNone()
     {
         map.SetTool(null);

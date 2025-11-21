@@ -66,8 +66,8 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        int x = Mathf.FloorToInt((hit.point.x - origin.x) / config.cellSize);
-        int z = Mathf.FloorToInt((hit.point.z - origin.z) / config.cellSize);
+        int x = Mathf.FloorToInt((hit.point.x - origin.x) / config.tileSize);
+        int z = Mathf.FloorToInt((hit.point.z - origin.z) / config.tileSize);
 
         if (!TileMap.IsValidPosition(x, z))
         {

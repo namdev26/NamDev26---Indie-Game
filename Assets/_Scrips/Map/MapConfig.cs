@@ -6,7 +6,7 @@ public class MapConfig : ScriptableObject
     [Header("Size")]
     public int width = 30;
     public int height = 30;
-    public float cellSize = 1f;
+    public float tileSize = 1f;
 
     [Header("Colors")]
     public Color grassColor = new Color(0.8f, 1f, 0.8f);
