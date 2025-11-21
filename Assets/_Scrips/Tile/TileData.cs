@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class TileData : MonoBehaviour
+[System.Serializable]
+
+public class TileData
 {
-    public int x;
-    public int z;
-    public bool occupied = false;
-    public GameObject occupant;
+    public bool isSoil = false;
+    public float moisture = 0f; // 0–1
+    public bool hasPlant = false;
 }

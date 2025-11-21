@@ -9,7 +9,6 @@ public class MapMesh : MonoBehaviour
     private MeshCollider col;
 
     private Mesh mesh;
-
     private Vector3[] vertices;
     private int[] triangles;
     private Color[] colors;
@@ -53,12 +52,13 @@ public class MapMesh : MonoBehaviour
                 vertices[v + 2] = new Vector3(px, 0, pz + map.cellSize);
                 vertices[v + 3] = new Vector3(px + map.cellSize, 0, pz + map.cellSize);
 
-                Color c = map.grassColor;
-                colors[v + 0] = c;
-                colors[v + 1] = c;
-                colors[v + 2] = c;
-                colors[v + 3] = c;
+                // default grass
+                colors[v + 0] = map.grassColor;
+                colors[v + 1] = map.grassColor;
+                colors[v + 2] = map.grassColor;
+                colors[v + 3] = map.grassColor;
 
+                // triangles
                 triangles[t + 0] = v + 0;
                 triangles[t + 1] = v + 2;
                 triangles[t + 2] = v + 1;
@@ -75,17 +75,27 @@ public class MapMesh : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.colors = colors;
+        mesh.RecalculateNormals();
         mesh.RecalculateBounds();
 
         col.sharedMesh = mesh;
     }
 
-    // update 1 tile màu đất
     public void UpdateTileColor(int x, int z)
     {
         int index = (x * map.height + z) * 4;
 
-        Color c = map.soilColor;
+        TileData tile = map.tiles[x, z];
+        Color c;
+
+        if (!tile.isSoil)
+        {
+            c = map.grassColor;
+        }
+        else
+        {
+            c = Color.Lerp(map.soilDryColor, map.soilWetColor, tile.moisture);
+        }
 
         colors[index + 0] = c;
         colors[index + 1] = c;
@@ -95,26 +105,22 @@ public class MapMesh : MonoBehaviour
         mesh.colors = colors;
     }
 
-    // update hover highlight
     public void UpdateHoverTile()
     {
-        // reset toàn bộ màu
-        for (int i = 0; i < colors.Length; i++)
-            colors[i] = map.grassColor;
+        int w = map.width;
+        int h = map.height;
 
-        // apply soil
-        for (int x = 0; x < map.width; x++)
-            for (int z = 0; z < map.height; z++)
-                if (map.map[x, z] == MapManager.TileType.Soil)
-                    UpdateTileColor(x, z);
+        for (int x = 0; x < w; x++)
+            for (int z = 0; z < h; z++)
+                UpdateTileColor(x, z);
 
-        // apply hover
         if (map.hoverTile.x != -1)
         {
             int x = map.hoverTile.x;
             int z = map.hoverTile.y;
 
-            int index = (x * map.height + z) * 4;
+            int index = (x * h + z) * 4;
+
             colors[index + 0] = map.hoverColor;
             colors[index + 1] = map.hoverColor;
             colors[index + 2] = map.hoverColor;
