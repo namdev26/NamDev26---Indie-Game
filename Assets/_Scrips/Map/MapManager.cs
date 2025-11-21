@@ -2,169 +2,85 @@
 
 public class MapManager : MonoBehaviour
 {
-    [Header("Map Size")]
-    public int width = 30;
-    public int height = 30;
+    [SerializeField] private MapConfig config;
+    [SerializeField] private Vector3 origin = Vector3.zero;
 
-    [Header("Colors")]
-    public Color grassColor = new Color(0.8f, 1f, 0.8f);
-    public Color soilDryColor = new Color(0.7f, 0.55f, 0.3f);   // soil moisture = 0
-    public Color soilWetColor = new Color(0.45f, 0.25f, 0.1f);  // soil moisture = 1
-    public Color hoverColor = new Color(1f, 1f, 0.7f);
-
-    [Header("Settings")]
-    public float cellSize = 1f;
-    public Vector3 origin = Vector3.zero;
-    public Material terrainMaterial;
-
-    public Vector2Int hoverTile = new Vector2Int(-1, -1);
-
-    public enum EditMode { None, SoilMode }
-    public EditMode currentMode = EditMode.None;
+    public MapConfig Config => config;
+    public Vector3 Origin => origin;
+    public TileMap TileMap { get; private set; }
+    public Vector2Int HoverTile { get; private set; } = new Vector2Int(-1, -1);
 
     private MapMesh mesh;
+    private Camera mainCamera;
+    private ITileModifier currentTool;
 
-    public TileData[,] tiles;
+    public event System.Action<int, int> OnTileChanged;
 
-    void Start()
+    private void Start()
     {
-        // init tile data
-        tiles = new TileData[width, height];
-        for (int x = 0; x < width; x++)
-            for (int z = 0; z < height; z++)
-                tiles[x, z] = new TileData();
+        mainCamera = Camera.main;
+        TileMap = new TileMap(config.width, config.height);
 
         mesh = gameObject.AddComponent<MapMesh>();
         mesh.Init(this);
     }
 
-    void Update()
+    private void Update()
     {
-        DetectHoverTile(); // luôn cho thấy hover
+        UpdateHoverTile();
 
-        if (Input.GetMouseButtonDown(0)) // click ô
-            OnTileClicked();
-    }
-
-    private void OnTileClicked()
-    {
-        if (hoverTile.x == -1) return;
-
-        int x = hoverTile.x;
-        int z = hoverTile.y;
-
-        switch (currentTool)
+        if (Input.GetMouseButtonDown(0) && HoverTile.x >= 0 && currentTool != null)
         {
-            case ToolMode.RemoveSoil:
-                RemoveSoil(x, z);
-                break;
-
-            case ToolMode.Plant:
-                TryPlant(x, z);
-                break;
-
-            case ToolMode.CreateSoil:   // 👈 thêm
-                CreateSoil(x, z);
-                break;
-
-            case ToolMode.None:
-            default:
-                break;
+            currentTool.Execute(TileMap, HoverTile.x, HoverTile.y);
+            NotifyTileChanged(HoverTile.x, HoverTile.y);
         }
     }
 
-    private void DetectHoverTile()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (!Physics.Raycast(ray, out RaycastHit hit, 200f))
-        {
-            ClearHover();
-            return;
-        }
-
-        Vector3 p = hit.point;
-
-        int x = Mathf.FloorToInt((p.x - origin.x) / cellSize);
-        int z = Mathf.FloorToInt((p.z - origin.z) / cellSize);
-
-        if (x < 0 || x >= width || z < 0 || z >= height)
-        {
-            ClearHover();
-            return;
-        }
-
-        hoverTile = new Vector2Int(x, z);
-        mesh.UpdateHoverTile();
-    }
-
-    private void ClearHover()
-    {
-        hoverTile = new Vector2Int(-1, -1);
-        mesh.UpdateHoverTile();
-    }
-
-    private void ApplySoil()
-    {
-        if (hoverTile.x == -1) return;
-
-        tiles[hoverTile.x, hoverTile.y].isSoil = true;
-        tiles[hoverTile.x, hoverTile.y].moisture = 1f; // mới đào là ẩm 100%
-
-        mesh.UpdateTileColor(hoverTile.x, hoverTile.y);
-    }
-
-    public void RemoveSoil(int x, int z)
-    {
-        tiles[x, z].isSoil = false;
-        tiles[x, z].moisture = 0;
-        tiles[x, z].hasPlant = false;
-
-        mesh.UpdateTileColor(x, z);
-    }
+    public void SetTool(ITileModifier tool) => currentTool = tool;
 
     public void MoveSoil(Vector2Int from, Vector2Int to)
     {
-        TileData a = tiles[from.x, from.y];
-        TileData b = tiles[to.x, to.y];
+        if (!TileMap.IsValidPosition(from.x, from.y) ||
+            !TileMap.IsValidPosition(to.x, to.y)) return;
 
-        b.isSoil = a.isSoil;
-        b.moisture = a.moisture;
-        b.hasPlant = a.hasPlant;
+        TileMap.GetTile(to.x, to.y).CopyFrom(TileMap.GetTile(from.x, from.y));
+        TileMap.GetTile(from.x, from.y).Clear();
 
-        a.isSoil = false;
-        a.moisture = 0;
-        a.hasPlant = false;
-
-        mesh.UpdateTileColor(from.x, from.y);
-        mesh.UpdateTileColor(to.x, to.y);
+        NotifyTileChanged(from.x, from.y);
+        NotifyTileChanged(to.x, to.y);
     }
 
-    public bool TryPlant(int x, int z)
+    private void NotifyTileChanged(int x, int z)
     {
-        if (!tiles[x, z].isSoil) return false;
-
-        tiles[x, z].hasPlant = true;
-
-        return true;
-    }
-
-    public enum ToolMode
-    {
-        None,
-        RemoveSoil,
-        Plant,
-        CreateSoil
-    }
-
-    public ToolMode currentTool = ToolMode.None;
-    public void CreateSoil(int x, int z)
-    {
-        tiles[x, z].isSoil = true;
-        tiles[x, z].moisture = 1f;   // mới tạo luôn ẩm 100%
-        tiles[x, z].hasPlant = false;
-
         mesh.UpdateTileColor(x, z);
+        OnTileChanged?.Invoke(x, z);
     }
 
+    private void UpdateHoverTile()
+    {
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (!Physics.Raycast(ray, out RaycastHit hit, 200f))
+        {
+            SetHover(-1, -1);
+            return;
+        }
+
+        int x = Mathf.FloorToInt((hit.point.x - origin.x) / config.cellSize);
+        int z = Mathf.FloorToInt((hit.point.z - origin.z) / config.cellSize);
+
+        if (!TileMap.IsValidPosition(x, z))
+        {
+            SetHover(-1, -1);
+            return;
+        }
+
+        SetHover(x, z);
+    }
+
+    private void SetHover(int x, int z)
+    {
+        HoverTile = new Vector2Int(x, z);
+        mesh.UpdateHoverTile();
+    }
 }

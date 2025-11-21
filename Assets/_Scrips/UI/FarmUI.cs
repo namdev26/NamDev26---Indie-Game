@@ -2,29 +2,33 @@ using UnityEngine;
 
 public class FarmUI : MonoBehaviour
 {
-    public MapManager map;
+    [SerializeField] private MapManager map;
+
+    private readonly CreateSoilTool createSoilTool = new CreateSoilTool();
+    private readonly RemoveSoilTool removeSoilTool = new RemoveSoilTool();
+    private readonly PlantTool plantTool = new PlantTool();
+
+    public void SelectCreateSoil()
+    {
+        map.SetTool(createSoilTool);
+        Debug.Log("Tool: Create Soil");
+    }
 
     public void SelectRemoveSoil()
     {
-        map.currentTool = MapManager.ToolMode.RemoveSoil;
+        map.SetTool(removeSoilTool);
         Debug.Log("Tool: Remove Soil");
     }
 
     public void SelectPlant()
     {
-        map.currentTool = MapManager.ToolMode.Plant;
+        map.SetTool(plantTool);
         Debug.Log("Tool: Plant");
     }
 
     public void SelectNone()
     {
-        map.currentTool = MapManager.ToolMode.None;
+        map.SetTool(null);
         Debug.Log("Tool: None");
     }
-    public void SelectCreateSoil()
-    {
-        map.currentTool = MapManager.ToolMode.CreateSoil;
-        Debug.Log("Tool: Create Soil");
-    }
-
 }
