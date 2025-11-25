@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class FarmUI : MonoBehaviour
 {
+    [SerializeField] private GameObject shopPanel;
     [SerializeField] private MapManager map;
     [SerializeField] private PlantManager plantManager;
 
@@ -44,6 +45,11 @@ public class FarmUI : MonoBehaviour
     {
         map.SetTool(new PlantTool(plantManager, carrotData));
         Debug.Log("Tool: Plant Carrot");
+    }
+
+    public void SelectButtonShop() 
+    {
+        shopPanel.SetActive(!shopPanel.activeSelf);
     }
 
     //public void SelectPlantCabbage()
