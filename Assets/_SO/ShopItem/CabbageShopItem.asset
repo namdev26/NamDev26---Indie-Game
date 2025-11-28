@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd80aaab4a49bd4881fce3583c8ef89, type: 3}
   m_Name: CabbageShopItem
   m_EditorClassIdentifier: 
+  id: 2
   itemName: Cabbage
   icon: {fileID: 21300000, guid: fedf6a2cf90c35f4da9e52ecdf7ffc6e, type: 3}
   price: 200
   description: Cabbage Description
+  itemType: 0
   seedItem: {fileID: 11400000, guid: 590410dbae858704e8b87c2dbae4aeb2, type: 2}

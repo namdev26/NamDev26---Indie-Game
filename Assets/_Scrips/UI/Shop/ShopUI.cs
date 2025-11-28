@@ -50,9 +50,8 @@ public class ShopUI : MonoBehaviour
     public void OnBuyButton() 
     {
         if (currentItem == null) return;
-        // kiem tra coin player
         
-        //playerInventory.AddItem(currentItem.seedItem, 1);
+        Inventory.Instance.AddItem(currentItem, 1);
 
         Debug.Log($"Bought {currentItem.itemName}");
     }

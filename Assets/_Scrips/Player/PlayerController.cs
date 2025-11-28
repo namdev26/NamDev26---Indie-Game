@@ -20,11 +20,11 @@ public class PlayerController : MonoBehaviour
         if (_input.sqrMagnitude > 0.01f)
         {
             // Đi bộ
-            targetSpeed = 0.5f;
+            targetSpeed = 1f;
 
             // Nhấn shift → chạy
-            if (Input.GetKey(KeyCode.LeftShift))
-                targetSpeed = 1f;
+            //if (Input.GetKey(KeyCode.LeftShift))
+            //    targetSpeed = 1f;
         }
 
         // Chuyển từ từ
