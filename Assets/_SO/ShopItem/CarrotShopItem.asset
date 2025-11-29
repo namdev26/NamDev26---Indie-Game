@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   itemName: Carrot
-  icon: {fileID: 21300000, guid: ce25d142ea17d4148ab0734b0cb66f27, type: 3}
+  icon: {fileID: 21300000, guid: b2879ad1907270e47b6cd0faf7c7455a, type: 3}
   price: 100
   description: Carrot Description
   itemType: 0
   seedItem: {fileID: 11400000, guid: 2256052b7dc471d49b3f4e522c3e9210, type: 2}
+  toolData:
+    toolType: 0
+    maxDurability: 0

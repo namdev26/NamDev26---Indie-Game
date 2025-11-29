@@ -35,7 +35,8 @@ public class PlantManager : MonoBehaviour
         var tile = map.TileMap.GetTile(x, z);
 
         if (!map.TileMap.IsValidPosition(x, z)) return false;
-        if (!tile.isSoil) return false;
+        if (tile.type != TileType.Soil) return false;
+
         if (plants.ContainsKey(pos)) return false;
 
         var plant = new PlantInstance(data, pos);
@@ -85,23 +86,22 @@ public class PlantManager : MonoBehaviour
     {
         var config = map.Config;
 
-        float px = map.Origin.x + plant.Position.x * config.tileSize + config.tileSize * 0.5f;
-        float pz = map.Origin.z + plant.Position.y * config.tileSize + config.tileSize * 0.5f;
+        float half = config.tileSize * 0.5f;
 
-        // Root object để giữ stage
+        float px = map.Origin.x + plant.Position.x * config.tileSize - half;
+        float pz = map.Origin.z + plant.Position.y * config.tileSize + half;
+
         var rootObj = Instantiate(plantRootPrefab, new Vector3(px, 0, pz), Quaternion.identity);
 
-        // Lấy prefab của stage hiện tại
         var stageData = plant.Data.GetStage(plant.StageIndex);
         if (stageData == null) return;
 
         var stageObj = Instantiate(stageData.prefab, rootObj.transform);
-
         stageObj.transform.localPosition = Vector3.zero;
-        stageObj.transform.localRotation = Quaternion.identity;
 
         plantObjects[plant.Position] = rootObj;
     }
+
 
     private void UpdatePlantVisual(PlantInstance plant)
     {

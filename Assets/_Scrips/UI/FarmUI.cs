@@ -10,7 +10,7 @@ public class FarmUI : MonoBehaviour
 
     //private readonly CreateSoilTool createSoilTool = new CreateSoilTool();
     //private readonly RemoveSoilTool removeSoilTool = new RemoveSoilTool();
-    private HarvestTool harvestTool;
+    //private HarvestTool harvestTool;
 
     public static FarmUI Instance;
     public bool uiOpen = false;
@@ -22,7 +22,7 @@ public class FarmUI : MonoBehaviour
 
     private void Start()
     {
-        harvestTool = new HarvestTool(plantManager);
+        //harvestTool = new HarvestTool(plantManager);
     }
 
     private void SetUIState(bool state)
@@ -104,14 +104,14 @@ public class FarmUI : MonoBehaviour
             switch (data.toolData.toolType)
             {
                 case ToolType.Hoe:
-                    map.SetTool(new CreateSoilTool());
+                    map.SetTool(new HoeTool());
                     Debug.Log("Tool: Hoe");
                     break;
 
-                //case ToolType.Shovel:
-                //    map.SetTool(new RemoveSoilTool());
-                //    Debug.Log("Tool: Shovel");
-                //    break;
+                case ToolType.Shovel:
+                    map.SetTool(new ShovelTool());
+                    Debug.Log("Tool: Shovel");
+                    break;
 
                 //case ToolType.Scythe:
                 //    map.SetTool(new HarvestTool(plantManager));

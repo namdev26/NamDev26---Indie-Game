@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CabbageSeed
   m_EditorClassIdentifier: 
   seedName: Cabbage
-  icon: {fileID: 21300000, guid: fedf6a2cf90c35f4da9e52ecdf7ffc6e, type: 3}
+  icon: {fileID: 21300000, guid: 64a71a0bbe611d14f850cded6b4fa472, type: 3}
   price: 200
   description: Cabbage Description
   plantData: {fileID: 11400000, guid: 0adc19c6b08237a44bf3894f96940e0b, type: 2}

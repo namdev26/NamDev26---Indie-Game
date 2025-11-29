@@ -10,33 +10,40 @@ public class MapManager : MonoBehaviour
     public TileMap TileMap { get; private set; }
     public Vector2Int HoverTile { get; private set; } = new Vector2Int(-1, -1);
 
-    private MapMesh mesh;
     private Camera mainCamera;
     private ITileModifier currentTool;
+
+    private GridSpawner spawner;
 
     public event System.Action<int, int> OnTileChanged;
 
     private void Start()
-    {
-        mainCamera = Camera.main;
-        TileMap = new TileMap(config.width, config.height);
+{
+    mainCamera = Camera.main;
 
-        mesh = gameObject.AddComponent<MapMesh>();
-        mesh.Init(this);
-    }
+    TileMap = new TileMap(config.width, config.height);
+
+    spawner = GetComponent<GridSpawner>();
+    spawner.Init(this);
+}
+
+
 
     private void Update()
     {
+        // Hover raycast
         UpdateHoverTile();
 
+        // Nếu UI mở → ngưng click map
+        if (FarmUI.Instance != null && FarmUI.Instance.uiOpen)
+            return;
+
+        // Click tile
         if (Input.GetMouseButtonDown(0) && HoverTile.x >= 0 && currentTool != null)
         {
             currentTool.Execute(TileMap, HoverTile.x, HoverTile.y);
             NotifyTileChanged(HoverTile.x, HoverTile.y);
         }
-
-        if (FarmUI.Instance != null && FarmUI.Instance.uiOpen)
-            return;
     }
 
     public void SetTool(ITileModifier tool) => currentTool = tool;
@@ -55,7 +62,11 @@ public class MapManager : MonoBehaviour
 
     private void NotifyTileChanged(int x, int z)
     {
-        mesh.UpdateTileColor(x, z);
+        var tile = TileMap.GetTile(x, z);
+
+        // CHUYỂN DATAMODEL → PREFAB
+        spawner.SetTiletype(x, z, tile.type);
+
         OnTileChanged?.Invoke(x, z);
     }
 
@@ -69,8 +80,9 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        int x = Mathf.FloorToInt((hit.point.x - origin.x) / config.tileSize);
-        int z = Mathf.FloorToInt((hit.point.z - origin.z) / config.tileSize);
+        int x = Mathf.FloorToInt((hit.point.x - origin.x + config.tileSize) / config.tileSize);
+        int z = Mathf.FloorToInt((hit.point.z - origin.z + config.tileSize) / config.tileSize) - 1;
+
 
         if (!TileMap.IsValidPosition(x, z))
         {
@@ -84,6 +96,5 @@ public class MapManager : MonoBehaviour
     private void SetHover(int x, int z)
     {
         HoverTile = new Vector2Int(x, z);
-        mesh.UpdateHoverTile();
     }
 }

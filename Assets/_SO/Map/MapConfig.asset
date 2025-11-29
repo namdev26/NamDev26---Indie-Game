@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 20
   height: 20
-  cellSize: 1.05
+  tileSize: 1
   grassColor: {r: 0.39771715, g: 0.5896226, b: 0.39771715, a: 1}
   soilDryColor: {r: 0.7, g: 0.55, b: 0.3, a: 1}
   soilWetColor: {r: 0.45, g: 0.25, b: 0.1, a: 1}
   hoverColor: {r: 1, g: 1, b: 0.7, a: 1}
-  terrainMaterial: {fileID: 2100000, guid: 4e1b3270453ecbe40bd5e9c324a5e871, type: 2}
+  terrainMaterial: {fileID: 2100000, guid: 382e2b1b7fbf94945963320a17603c7c, type: 2}

@@ -1,7 +1,7 @@
 ﻿public enum ToolType
 {
-    Hoe,        // CreateSoil
-    Shovel,     // RemoveSoil
-    Scythe,     // Harvest
-    WaterCan    // Water, nếu có
+    Hoe,        // Tạo ô đất
+    Shovel,     // Xóa ô đất
+    Sickle,     // Liềm thu hoạch
+    WaterCan    // Tưới cây
 }

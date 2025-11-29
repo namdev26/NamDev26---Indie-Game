@@ -3,27 +3,28 @@ using UnityEngine;
 [System.Serializable]
 public class TileData
 {
-    public bool isSoil;
+    public TileType type = TileType.Grass;
+
     public float moisture;
     public bool hasPlant;
 
     public void SetSoil(float moistureValue = 1f)
     {
-        isSoil = true;
+        type = TileType.Soil;
         moisture = moistureValue;
         hasPlant = false;
     }
 
     public void Clear()
     {
-        isSoil = false;
+        type = TileType.Grass;
         moisture = 0f;
         hasPlant = false;
     }
 
     public void CopyFrom(TileData other)
     {
-        isSoil = other.isSoil;
+        type = other.type;
         moisture = other.moisture;
         hasPlant = other.hasPlant;
     }
