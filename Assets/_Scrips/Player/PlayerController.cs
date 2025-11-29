@@ -4,8 +4,10 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Animator animator;
-    [SerializeField] private float _moveSpeed = 4f;
-    [SerializeField] private float runMultiplier = 1.6f;
+    [SerializeField] private float _moveSpeed = 1f;
+    [SerializeField] private float runMultiplier = 2.5f;
+
+    //[SerializeField] private float _turnSpeed = 10f;
 
     private Vector3 _input;
 

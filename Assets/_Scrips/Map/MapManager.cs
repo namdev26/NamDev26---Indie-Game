@@ -34,6 +34,9 @@ public class MapManager : MonoBehaviour
             currentTool.Execute(TileMap, HoverTile.x, HoverTile.y);
             NotifyTileChanged(HoverTile.x, HoverTile.y);
         }
+
+        if (FarmUI.Instance != null && FarmUI.Instance.uiOpen)
+            return;
     }
 
     public void SetTool(ITileModifier tool) => currentTool = tool;

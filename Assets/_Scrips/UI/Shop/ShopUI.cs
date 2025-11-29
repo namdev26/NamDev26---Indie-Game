@@ -47,12 +47,20 @@ public class ShopUI : MonoBehaviour
         detailPrice.text = itemData.price.ToString();
     }
 
-    public void OnBuyButton() 
+    public void OnBuy1Button() 
     {
         if (currentItem == null) return;
         
         Inventory.Instance.AddItem(currentItem, 1);
 
-        Debug.Log($"Bought {currentItem.itemName}");
+        Debug.Log($"Bought 1 {currentItem.itemName}");
+    }
+
+    public void OnBuy10Button() 
+    {
+        if (currentItem == null) return;
+        
+        Inventory.Instance.AddItem(currentItem, 10);
+        Debug.Log($"Bought 10 {currentItem.itemName}");
     }
 }

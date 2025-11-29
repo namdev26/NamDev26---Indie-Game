@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: Cabbage
   m_EditorClassIdentifier: 
   plantName: Cabbage
-  stagePrefabs:
-  - {fileID: 8222701873046046242, guid: 420c3d0447f8ba64588a7c833e010801, type: 3}
-  - {fileID: 438807526256802673, guid: 96810a764659e7b44be2b4c30ffe4507, type: 3}
-  - {fileID: 9021413419885584325, guid: 848fa706b8e6f1948aa73b06f4d001a2, type: 3}
-  growthTimeS: 5
-  growthTimeM: 8
+  stages:
+  - stageName: 1
+    prefab: {fileID: 8222701873046046242, guid: 420c3d0447f8ba64588a7c833e010801, type: 3}
+    growthTime: 1
+  - stageName: 2
+    prefab: {fileID: 438807526256802673, guid: 96810a764659e7b44be2b4c30ffe4507, type: 3}
+    growthTime: 2
+  - stageName: 3
+    prefab: {fileID: 9021413419885584325, guid: 848fa706b8e6f1948aa73b06f4d001a2, type: 3}
+    growthTime: 3
   harvestAmount: 2

@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: Carrot
   m_EditorClassIdentifier: 
   plantName: Carrot
-  stagePrefabs:
-  - {fileID: 1791515083459145459, guid: e40003ada0ef6c94a9577a0c57511a55, type: 3}
-  - {fileID: 3111383673402725249, guid: eef06a305eb390747bea64e1ddf04508, type: 3}
-  - {fileID: 3121110608562062268, guid: 887bb655928d3fd4fb37f6a25c491456, type: 3}
-  growthTimeS: 5
-  growthTimeM: 8
+  stages:
+  - stageName: 1
+    prefab: {fileID: 1791515083459145459, guid: e40003ada0ef6c94a9577a0c57511a55, type: 3}
+    growthTime: 1
+  - stageName: 2
+    prefab: {fileID: 3111383673402725249, guid: eef06a305eb390747bea64e1ddf04508, type: 3}
+    growthTime: 2
+  - stageName: 3
+    prefab: {fileID: 3121110608562062268, guid: 887bb655928d3fd4fb37f6a25c491456, type: 3}
+    growthTime: 3
   harvestAmount: 1

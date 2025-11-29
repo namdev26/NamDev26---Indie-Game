@@ -926,13 +926,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389478239}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.12156863}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1495,7 +1495,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 858421151}
         m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-        m_MethodName: OnBuyButton
+        m_MethodName: OnBuy1Button
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1989,6 +1989,7 @@ MonoBehaviour:
   zoomSpeed: 120
   minSize: 2
   maxSize: 10
+  uiOpen: 0
 --- !u!4 &842508520 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4713277937181384, guid: 884bbdb73a830a3478e6e8623a6e5ae8, type: 3}
@@ -2088,6 +2089,7 @@ MonoBehaviour:
   shopItems:
   - {fileID: 11400000, guid: 6f2e68c1b54a5714c8a46d26f1675e36, type: 2}
   - {fileID: 11400000, guid: a64ec5b25d33bb14898b1f61cbd506a3, type: 2}
+  - {fileID: 11400000, guid: 276b1e952da581b41a51070344ca3670, type: 2}
   itemsGridParent: {fileID: 1877114151}
   shopItemPrefab: {fileID: 5002434762815158040, guid: 5355dd8bcc762bc4cbc28165cf70e167, type: 3}
   detailIcon: {fileID: 1086737907}
@@ -2728,7 +2730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 1658233112}
-  plantPrefab: {fileID: 5991684897421859364, guid: 499761a4268031e45a1c90fc6af7efbc, type: 3}
+  plantRootPrefab: {fileID: 5991684897421859364, guid: 499761a4268031e45a1c90fc6af7efbc, type: 3}
 --- !u!1 &1000194605
 GameObject:
   m_ObjectHideFlags: 0
@@ -3397,6 +3399,10 @@ MonoBehaviour:
   items:
   - itemData: {fileID: 11400000, guid: 6f2e68c1b54a5714c8a46d26f1675e36, type: 2}
     quantity: 1
+    durability: 0
+  - itemData: {fileID: 11400000, guid: 276b1e952da581b41a51070344ca3670, type: 2}
+    quantity: 1
+    durability: 0
 --- !u!1 &1155202630
 GameObject:
   m_ObjectHideFlags: 0
@@ -3799,7 +3805,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 858421151}
         m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-        m_MethodName: OnBuyButton
+        m_MethodName: OnBuy10Button
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3847,6 +3853,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1286422741}
   m_CullTransparentMesh: 1
+--- !u!1 &1294416339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1294416341}
+  - component: {fileID: 1294416340}
+  m_Layer: 0
+  m_Name: UnityMainThreadDispatcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1294416340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294416339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1842700439, guid: 42c3f40ad0520e442aa80842ab9748a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1294416341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294416339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1330541955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3962,13 +4012,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331505045}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.12156863}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4308,7 +4358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1475862294
 Transform:
   m_ObjectHideFlags: 0
@@ -4847,6 +4897,8 @@ MonoBehaviour:
   inventoryPanel: {fileID: 389478239}
   map: {fileID: 1658233112}
   plantManager: {fileID: 999299633}
+  cameraController: {fileID: 830102000}
+  uiOpen: 0
 --- !u!1 &1662305059
 GameObject:
   m_ObjectHideFlags: 0
@@ -5882,7 +5934,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1658233114}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: FarmUI, Assembly-CSharp
         m_MethodName: SelectPlantCarrot
         m_Mode: 1
@@ -9667,3 +9719,4 @@ SceneRoots:
   - {fileID: 1475862294}
   - {fileID: 159026756}
   - {fileID: 2034640208}
+  - {fileID: 1294416341}

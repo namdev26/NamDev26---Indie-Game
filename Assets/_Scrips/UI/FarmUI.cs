@@ -6,18 +6,14 @@ public class FarmUI : MonoBehaviour
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private MapManager map;
     [SerializeField] private PlantManager plantManager;
+    [SerializeField] private OrthoIsoCameraController cameraController;
 
-    [Header("Plant Types")]
-    //[SerializeField] private PlantData tomatoData;
-    //[SerializeField] private PlantData carrotData;
-    //[SerializeField] private PlantData cabbageData;
-
-    private readonly CreateSoilTool createSoilTool = new CreateSoilTool();
-    private readonly RemoveSoilTool removeSoilTool = new RemoveSoilTool();
-
+    //private readonly CreateSoilTool createSoilTool = new CreateSoilTool();
+    //private readonly RemoveSoilTool removeSoilTool = new RemoveSoilTool();
     private HarvestTool harvestTool;
 
     public static FarmUI Instance;
+    public bool uiOpen = false;
 
     private void Awake()
     {
@@ -29,74 +25,107 @@ public class FarmUI : MonoBehaviour
         harvestTool = new HarvestTool(plantManager);
     }
 
+    private void SetUIState(bool state)
+    {
+        uiOpen = state;
+
+        if (cameraController != null)
+            cameraController.uiOpen = state;
+
+        if (state)
+            map.SetTool(null);
+    }
+
     // ===== SOIL TOOLS =====
-    public void SelectCreateSoil()
-    {
-        map.SetTool(createSoilTool);
-        Debug.Log("Tool: Create Soil");
-    }
-
-    public void SelectRemoveSoil()
-    {
-        map.SetTool(removeSoilTool);
-        Debug.Log("Tool: Remove Soil");
-    }
-
-    // ===== PLANT TOOLS =====
-    //public void SelectPlantTomato()
+    //public void SelectCreateSoil()
     //{
-    //    map.SetTool(new PlantTool(plantManager, tomatoData));
-    //    Debug.Log("Tool: Plant Tomato");
+    //    if (uiOpen) return;
+    //    map.SetTool(createSoilTool);
+    //    Debug.Log("Tool: Create Soil");
     //}
 
-    //public void SelectPlantCarrot()
+    //public void SelectRemoveSoil()
     //{
-    //    map.SetTool(new PlantTool(plantManager, carrotData));
-    //    Debug.Log("Tool: Plant Carrot");
+    //    if (uiOpen) return;
+    //    //map.SetTool(removeSoilTool);
+    //    Debug.Log("Tool: Remove Soil");
     //}
 
-    public void SelectButtonShop() 
+    // ===== UI PANELS =====
+    public void SelectButtonShop()
     {
-        shopPanel.SetActive(!shopPanel.activeSelf);
+        bool newState = !shopPanel.activeSelf;
+        shopPanel.SetActive(newState);
+        SetUIState(newState);
     }
 
     public void SelectButtonInventory()
     {
-        inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+        bool newState = !inventoryPanel.activeSelf;
+        inventoryPanel.SetActive(newState);
+        SetUIState(newState);
     }
 
-    //public void SelectPlantCabbage()
+    // ===== HARVEST =====
+    //public void SelectHarvest()
     //{
-    //    map.SetTool(new PlantTool(plantManager, cabbageData));
-    //    Debug.Log("Tool: Plant Cabbage");
+    //    if (uiOpen) return;
+    //    map.SetTool(harvestTool);
+    //    Debug.Log("Tool: Harvest");
     //}
-
-    // ===== HARVEST TOOL =====
-    public void SelectHarvest()
-    {
-        map.SetTool(harvestTool);
-        Debug.Log("Tool: Harvest");
-    }
 
     public void SelectNone()
     {
+        if (uiOpen) return;
         map.SetTool(null);
         Debug.Log("Tool: None");
     }
 
+    // ===== SELECT SEED ITEM =====
     public void SelectToolFromItem(InventoryItem item)
     {
-        if (item.itemData.itemType == ItemType.Seed)
+        if (uiOpen) return;
+        if (item == null || item.itemData == null) return;
+
+        ShopItemData data = item.itemData;
+
+        // ==== SEED ====
+        if (data.itemType == ItemType.Seed)
         {
-            PlantData plantData = item.itemData.seedItem.plantData;
-
+            PlantData plantData = data.seedItem.plantData;
             map.SetTool(new PlantTool(plantManager, plantData, item));
-
             Debug.Log("Tool: Plant " + plantData.name);
             return;
         }
 
-        Debug.Log("Selected non-seed item.");
-    }
+        // ==== TOOL ====
+        if (data.itemType == ItemType.Tool)
+        {
+            switch (data.toolData.toolType)
+            {
+                case ToolType.Hoe:
+                    map.SetTool(new CreateSoilTool());
+                    Debug.Log("Tool: Hoe");
+                    break;
 
+                //case ToolType.Shovel:
+                //    map.SetTool(new RemoveSoilTool());
+                //    Debug.Log("Tool: Shovel");
+                //    break;
+
+                //case ToolType.Scythe:
+                //    map.SetTool(new HarvestTool(plantManager));
+                //    Debug.Log("Tool: Scythe");
+                //    break;
+
+                default:
+                    Debug.LogWarning("Unknown tool type!");
+                    break;
+            }
+
+            return;
+        }
+
+        Debug.Log("Selected non-tool item.");
+    }
 }

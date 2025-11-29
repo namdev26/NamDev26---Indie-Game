@@ -1,23 +1,32 @@
-using JetBrains.Annotations;
 using UnityEngine;
-
-public enum PlantStage { Small, Medium, Large }
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewPlant", menuName = "Game/PlantData")]
 public class PlantData : ScriptableObject
 {
     public string plantName;
-    public GameObject[] stagePrefabs = new GameObject[3];
-    public float growthTimeS = 5f; 
-    public float growthTimeM = 8f;
+
+    public List<PlantStageData> stages = new List<PlantStageData>();
+
     public int harvestAmount = 1;
 
-    public float GetGrowthTime(PlantStage stage) => stage switch
+    public PlantStageData GetStage(int index)
     {
-        PlantStage.Small => growthTimeS,
-        PlantStage.Medium => growthTimeM,
-        _ => 0f
-    };
+        if (index < 0 || index >= stages.Count)
+            return null;
 
-    public GameObject GetObjPrefab(PlantStage stage) => stagePrefabs[(int)stage];
+        return stages[index];
+    }
+
+    public float GetGrowthTime(int index)
+    {
+        var s = GetStage(index);
+        return s != null ? s.growthTime : 0f;
+    }
+
+    public GameObject GetPrefab(int index)
+    {
+        var s = GetStage(index);
+        return s != null ? s.prefab : null;
+    }
 }

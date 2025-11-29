@@ -20,4 +20,5 @@ public class ShopItemData : ScriptableObject
     public ItemType itemType;
 
     public SeedItem seedItem;
+    public ToolData toolData;
 }

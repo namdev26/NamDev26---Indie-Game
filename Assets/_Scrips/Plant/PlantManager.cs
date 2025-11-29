@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlantManager : MonoBehaviour
 {
     [SerializeField] private MapManager map;
-    [SerializeField] private GameObject plantPrefab; 
+    [SerializeField] private GameObject plantRootPrefab; 
 
     private Dictionary<Vector2Int, PlantInstance> plants = new Dictionary<Vector2Int, PlantInstance>();
     private Dictionary<Vector2Int, GameObject> plantObjects = new Dictionary<Vector2Int, GameObject>();
@@ -88,38 +88,34 @@ public class PlantManager : MonoBehaviour
         float px = map.Origin.x + plant.Position.x * config.tileSize + config.tileSize * 0.5f;
         float pz = map.Origin.z + plant.Position.y * config.tileSize + config.tileSize * 0.5f;
 
-        var obj = Instantiate(plantPrefab, new Vector3(px, 0, pz), Quaternion.identity);
+        // Root object để giữ stage
+        var rootObj = Instantiate(plantRootPrefab, new Vector3(px, 0, pz), Quaternion.identity);
 
-        var stagePrefab = plant.Data.GetObjPrefab(plant.Stage);
-        var stageObj = Instantiate(stagePrefab, obj.transform);
+        // Lấy prefab của stage hiện tại
+        var stageData = plant.Data.GetStage(plant.StageIndex);
+        if (stageData == null) return;
+
+        var stageObj = Instantiate(stageData.prefab, rootObj.transform);
 
         stageObj.transform.localPosition = Vector3.zero;
         stageObj.transform.localRotation = Quaternion.identity;
 
-        plantObjects[plant.Position] = obj;
+        plantObjects[plant.Position] = rootObj;
     }
-
-
 
     private void UpdatePlantVisual(PlantInstance plant)
     {
-        if (!plantObjects.TryGetValue(plant.Position, out var obj))
+        if (!plantObjects.TryGetValue(plant.Position, out var rootObj))
             return;
 
-        Destroy(obj);
+        foreach (Transform child in rootObj.transform)
+            Destroy(child.gameObject);
 
-        var config = map.Config;
+        var stageData = plant.Data.GetStage(plant.StageIndex);
+        if (stageData == null) return;
 
-        float px = map.Origin.x + plant.Position.x * config.tileSize + config.tileSize * 0.5f;
-        float pz = map.Origin.z + plant.Position.y * config.tileSize + config.tileSize * 0.5f;
-
-        var newObj = Instantiate(
-            plant.Data.stagePrefabs[(int)plant.Stage],
-            new Vector3(px, 0, pz),
-            Quaternion.identity
-        );
-
-        plantObjects[plant.Position] = newObj;
+        var newStage = Instantiate(stageData.prefab, rootObj.transform);
+        newStage.transform.localPosition = Vector3.zero;
+        newStage.transform.localRotation = Quaternion.identity;
     }
-
 }
