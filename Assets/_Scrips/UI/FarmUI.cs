@@ -8,21 +8,12 @@ public class FarmUI : MonoBehaviour
     [SerializeField] private PlantManager plantManager;
     [SerializeField] private OrthoIsoCameraController cameraController;
 
-    //private readonly CreateSoilTool createSoilTool = new CreateSoilTool();
-    //private readonly RemoveSoilTool removeSoilTool = new RemoveSoilTool();
-    //private HarvestTool harvestTool;
-
     public static FarmUI Instance;
     public bool uiOpen = false;
 
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
-        //harvestTool = new HarvestTool(plantManager);
     }
 
     private void SetUIState(bool state)
@@ -36,22 +27,7 @@ public class FarmUI : MonoBehaviour
             map.SetTool(null);
     }
 
-    // ===== SOIL TOOLS =====
-    //public void SelectCreateSoil()
-    //{
-    //    if (uiOpen) return;
-    //    map.SetTool(createSoilTool);
-    //    Debug.Log("Tool: Create Soil");
-    //}
-
-    //public void SelectRemoveSoil()
-    //{
-    //    if (uiOpen) return;
-    //    //map.SetTool(removeSoilTool);
-    //    Debug.Log("Tool: Remove Soil");
-    //}
-
-    // ===== UI PANELS =====
+    // ===== UI BUTTONS =====
     public void SelectButtonShop()
     {
         bool newState = !shopPanel.activeSelf;
@@ -66,14 +42,6 @@ public class FarmUI : MonoBehaviour
         SetUIState(newState);
     }
 
-    // ===== HARVEST =====
-    //public void SelectHarvest()
-    //{
-    //    if (uiOpen) return;
-    //    map.SetTool(harvestTool);
-    //    Debug.Log("Tool: Harvest");
-    //}
-
     public void SelectNone()
     {
         if (uiOpen) return;
@@ -81,7 +49,7 @@ public class FarmUI : MonoBehaviour
         Debug.Log("Tool: None");
     }
 
-    // ===== SELECT SEED ITEM =====
+    // ===== SELECT ITEM FROM HOTBAR / INVENTORY =====
     public void SelectToolFromItem(InventoryItem item)
     {
         if (uiOpen) return;
@@ -93,7 +61,9 @@ public class FarmUI : MonoBehaviour
         if (data.itemType == ItemType.Seed)
         {
             PlantData plantData = data.seedItem.plantData;
-            map.SetTool(new PlantTool(plantManager, plantData, item));
+
+            map.SetTool(new PlantTool(map, plantManager, plantData, item));
+
             Debug.Log("Tool: Plant " + plantData.name);
             return;
         }
@@ -104,17 +74,17 @@ public class FarmUI : MonoBehaviour
             switch (data.toolData.toolType)
             {
                 case ToolType.Hoe:
-                    map.SetTool(new HoeTool());
+                    map.SetTool(new HoeTool(map));
                     Debug.Log("Tool: Hoe");
                     break;
 
                 case ToolType.Shovel:
-                    map.SetTool(new ShovelTool());
+                    map.SetTool(new ShovelTool(map));
                     Debug.Log("Tool: Shovel");
                     break;
 
                 //case ToolType.Scythe:
-                //    map.SetTool(new HarvestTool(plantManager));
+                //    map.SetTool(new HarvestTool(map, plantManager));
                 //    Debug.Log("Tool: Scythe");
                 //    break;
 
