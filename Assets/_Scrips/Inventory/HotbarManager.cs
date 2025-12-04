@@ -36,8 +36,22 @@ public class HotbarManager : MonoBehaviour
 
     public void SelectToolFromHotbar(HotbarSlot slot)
     {
-        selectedSlot = slot;
+        // Nếu click vào slot đã được chọn → bỏ chọn
+        if (selectedSlot == slot)
+        {
+            DeselectTool();
+            return;
+        }
 
+        // Bỏ chọn slot cũ nếu có
+        if (selectedSlot != null)
+        {
+            selectedSlot.ForceDeselect();
+        }
+
+        // Chọn slot mới
+        selectedSlot = slot;
+        slot.SetSelected(true);
         FarmUI.Instance.SelectToolFromItem(slot.GetItem());
     }
 
@@ -50,16 +64,35 @@ public class HotbarManager : MonoBehaviour
             if (item == null)
             {
                 slot.ClearSlot();
+                // Nếu slot này đang được chọn và bị clear → bỏ chọn
+                if (selectedSlot == slot)
+                {
+                    selectedSlot = null;
+                }
                 continue;
             }
 
             if (!Inventory.Instance.items.Contains(item))
             {
                 slot.ClearSlot();
+                // Nếu slot này đang được chọn và bị clear → bỏ chọn
+                if (selectedSlot == slot)
+                {
+                    selectedSlot = null;
+                    FarmUI.Instance.SelectNone();
+                }
                 continue;
             }
 
+            // Lưu trạng thái selected trước khi SetItem (SetItem sẽ reset selected)
+            bool wasSelected = (selectedSlot == slot);
             slot.SetItem(item);
+            
+            // Khôi phục trạng thái selected nếu slot này đang được chọn
+            if (wasSelected)
+            {
+                slot.SetSelected(true);
+            }
         }
     }
 

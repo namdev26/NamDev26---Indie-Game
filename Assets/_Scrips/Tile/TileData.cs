@@ -15,6 +15,11 @@ public class TileData
         hasPlant = false;
     }
 
+    public bool HasPlant()
+    {
+        return hasPlant;
+    }
+
     public void Clear()
     {
         type = TileType.Grass;

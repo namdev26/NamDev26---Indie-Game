@@ -19,7 +19,8 @@ public class ShovelTool : BaseTool
         var tile = map.TileMap.GetTile(tilePos.x, tilePos.y);
         if (tile == null) return;
 
-        // N?u ?ang có plant trong tile ? có th? check rule sau
+        if (tile.HasPlant()) return;
+
         tile.Clear();
 
         map.NotifyTileChanged(tilePos.x, tilePos.y);

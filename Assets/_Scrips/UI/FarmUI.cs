@@ -83,10 +83,10 @@ public class FarmUI : MonoBehaviour
                     Debug.Log("Tool: Shovel");
                     break;
 
-                //case ToolType.Scythe:
-                //    map.SetTool(new HarvestTool(map, plantManager));
-                //    Debug.Log("Tool: Scythe");
-                //    break;
+                case ToolType.Sickle:
+                    map.SetTool(new HarvestTool(map, plantManager));
+                    Debug.Log("Tool: Scythe");
+                    break;
 
                 default:
                     Debug.LogWarning("Unknown tool type!");

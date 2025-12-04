@@ -35,6 +35,8 @@ public class HotbarSlot : MonoBehaviour
         clickButton.onClick.RemoveAllListeners();
         clickButton.onClick.AddListener(OnSlotClicked);
 
+        // Reset trạng thái selected khi item thay đổi
+        isSelected = false;
         outline.enabled = false;
     }
 
@@ -42,19 +44,27 @@ public class HotbarSlot : MonoBehaviour
     {
         if (currentItem == null) return;
 
-        isSelected = !isSelected;
-
+        // Nếu slot này đã được chọn → bỏ chọn
         if (isSelected)
-            HotbarManager.Instance.SelectToolFromHotbar(this);
-        else
+        {
             HotbarManager.Instance.DeselectTool();
-
-        UpdateUI();
+        }
+        else
+        {
+            // Chọn slot này (HotbarManager sẽ tự động bỏ chọn slot cũ)
+            HotbarManager.Instance.SelectToolFromHotbar(this);
+        }
     }
 
     public void UpdateUI()
     {
         outline.enabled = isSelected;
+    }
+
+    public void SetSelected(bool selected)
+    {
+        isSelected = selected;
+        UpdateUI();
     }
 
     public void ForceDeselect()

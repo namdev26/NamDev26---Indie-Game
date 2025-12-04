@@ -51,16 +51,37 @@ public class ShopUI : MonoBehaviour
     {
         if (currentItem == null) return;
         
+        int totalPrice = currentItem.price * 1;
+        
+        // Kiểm tra đủ tiền
+        if (!PlayerWallet.Instance.Spend(CurrencyType.Coin, totalPrice))
+        {
+            Debug.LogWarning($"Không đủ tiền! Cần {totalPrice} coin.");
+            return;
+        }
+        
+        // Thêm item vào inventory
         Inventory.Instance.AddItem(currentItem, 1);
 
-        Debug.Log($"Bought 1 {currentItem.itemName}");
+        Debug.Log($"Đã mua 1 {currentItem.itemName} với giá {totalPrice} coin");
     }
 
     public void OnBuy10Button() 
     {
         if (currentItem == null) return;
         
+        int totalPrice = currentItem.price * 10;
+        
+        // Kiểm tra đủ tiền
+        if (!PlayerWallet.Instance.Spend(CurrencyType.Coin, totalPrice))
+        {
+            Debug.LogWarning($"Không đủ tiền! Cần {totalPrice} coin.");
+            return;
+        }
+        
+        // Thêm item vào inventory
         Inventory.Instance.AddItem(currentItem, 10);
-        Debug.Log($"Bought 10 {currentItem.itemName}");
+        
+        Debug.Log($"Đã mua 10 {currentItem.itemName} với giá {totalPrice} coin");
     }
 }

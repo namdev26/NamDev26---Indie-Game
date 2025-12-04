@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlantInstance
 {
@@ -7,9 +7,11 @@ public class PlantInstance
     public float GrowthTimer { get; private set; }
     public Vector2Int Position { get; }
 
-    public bool CanHarvest => StageIndex == Data.stages.Count - 1;
-
+    public bool CanHarvest => StageIndex >= Data.stages.Count - 1;
     public bool CanGrow => StageIndex < Data.stages.Count - 1;
+
+    // Giữ logic cũ
+    public bool IsGrown() => StageIndex == Data.stages.Count - 1;
 
     public PlantInstance(PlantData data, Vector2Int position)
     {
@@ -45,9 +47,15 @@ public class PlantInstance
     public float GetGrowthProgress()
     {
         if (!CanGrow) return 1f;
-        float time = Data.GetGrowthTime(StageIndex);
-        if (time <= 0f) return 1f;
 
-        return GrowthTimer / time;
+        float required = Data.GetGrowthTime(StageIndex);
+        if (required <= 0f) return 1f;
+
+        return GrowthTimer / required;
+    }
+
+    public int GetHarvestStage()
+    {
+        return StageIndex;
     }
 }

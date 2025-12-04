@@ -47,21 +47,6 @@ public class PlantManager : MonoBehaviour
         return true;
     }
 
-    public int TryHarvest(int x, int z)
-    {
-        var pos = new Vector2Int(x, z);
-
-        if (!plants.TryGetValue(pos, out var plant)) return 0;
-        if (!plant.CanHarvest) return 0;
-
-        int amount = plant.Data.harvestAmount;
-
-        RemovePlant(pos);
-        OnPlantHarvested?.Invoke(pos, amount);
-
-        return amount;
-    }
-
     public void RemovePlant(Vector2Int pos)
     {
         if (!plants.ContainsKey(pos)) return;
@@ -117,5 +102,37 @@ public class PlantManager : MonoBehaviour
         var newStage = Instantiate(stageData.prefab, rootObj.transform);
         newStage.transform.localPosition = Vector3.zero;
         newStage.transform.localRotation = Quaternion.identity;
+    }
+
+    public PlantInstance GetPlantAt(Vector2Int pos)
+    {
+        if (plants.TryGetValue(pos, out var plant))
+            return plant;
+
+        return null;
+    }
+
+    // HARVEST PLANT
+    public bool HarvestAt(int x, int z)
+    {
+        Vector2Int pos = new Vector2Int(x, z);
+
+        if (!plants.TryGetValue(pos, out PlantInstance plant))
+            return false;
+
+        if (!plant.IsGrown())
+            return false;
+
+        OnPlantHarvested?.Invoke(pos, plant.GetHarvestStage());
+
+        plants.Remove(pos);
+
+        if (plantObjects.TryGetValue(pos, out GameObject obj))
+        {
+            GameObject.Destroy(obj);
+            plantObjects.Remove(pos);
+        }
+
+        return true;
     }
 }

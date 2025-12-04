@@ -39,6 +39,12 @@ public class MapManager : MonoBehaviour
             Vector3 wp = TileToWorld(HoverTile.x, HoverTile.y);
             currentTool.OnPointerDown(wp);
         }
+
+        if (Input.GetMouseButton(0) && HoverTile.x >= 0 && currentTool != null)
+        {
+            Vector3 wp = TileToWorld(HoverTile.x, HoverTile.y);
+            currentTool.OnPointerHold(wp);
+        }
     }
 
     public void SetTool(BaseTool tool)
