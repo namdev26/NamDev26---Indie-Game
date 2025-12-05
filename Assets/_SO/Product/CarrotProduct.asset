@@ -9,16 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffd80aaab4a49bd4881fce3583c8ef89, type: 3}
-  m_Name: CarrotShopItem
+  m_Script: {fileID: 11500000, guid: d10991c1bd04853488964ea97f2c626b, type: 3}
+  m_Name: CarrotProduct
   m_EditorClassIdentifier: 
-  id: 1
-  itemName: Carrot
+  productName: Carrot
   icon: {fileID: 21300000, guid: b2879ad1907270e47b6cd0faf7c7455a, type: 3}
-  price: 100
-  description: Carrot Description
-  itemType: 0
-  seedItem: {fileID: 11400000, guid: 2256052b7dc471d49b3f4e522c3e9210, type: 2}
-  toolData:
-    toolType: 0
-    maxDurability: 0
+  price: 200
+  description: CarrotProduct

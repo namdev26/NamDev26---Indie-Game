@@ -3,10 +3,11 @@ using UnityEngine;
 public enum ItemType
 {
     Seed,
+    Crop,
     Tool,
-    Consumable,
-    Other
+    Consumable
 }
+
 
 [CreateAssetMenu(menuName = "Game/Farm/Shop Item")]
 public class ShopItemData : ScriptableObject
@@ -20,5 +21,6 @@ public class ShopItemData : ScriptableObject
     public ItemType itemType;
 
     public SeedItem seedItem;
+    public ProductItem productItem;
     public ToolData toolData;
 }

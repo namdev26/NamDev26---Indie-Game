@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlantManager : MonoBehaviour
 {
     [SerializeField] private MapManager map;
-    [SerializeField] private GameObject plantRootPrefab; 
+    [SerializeField] private GameObject plantRootPrefab;
 
     private Dictionary<Vector2Int, PlantInstance> plants = new Dictionary<Vector2Int, PlantInstance>();
     private Dictionary<Vector2Int, GameObject> plantObjects = new Dictionary<Vector2Int, GameObject>();
@@ -112,7 +112,6 @@ public class PlantManager : MonoBehaviour
         return null;
     }
 
-    // HARVEST PLANT
     public bool HarvestAt(int x, int z)
     {
         Vector2Int pos = new Vector2Int(x, z);
@@ -123,15 +122,29 @@ public class PlantManager : MonoBehaviour
         if (!plant.IsGrown())
             return false;
 
-        OnPlantHarvested?.Invoke(pos, plant.GetHarvestStage());
+        // === 1. Thêm vào kho đồ ===
+        var drop = plant.Data.harvest;
+        if (drop != null)
+        {
+            Inventory.Instance.AddItem(drop.item, drop.quantity);
+        }
 
+        // === 2. Gửi event ===
+        OnPlantHarvested?.Invoke(pos, drop?.quantity ?? 1);
+
+        // === 3. Xóa khỏi dictionary ===
         plants.Remove(pos);
+        map.TileMap.GetTile(pos.x, pos.y).hasPlant = false;
 
+        // === 4. Xóa object visual ===
         if (plantObjects.TryGetValue(pos, out GameObject obj))
         {
             GameObject.Destroy(obj);
             plantObjects.Remove(pos);
         }
+
+        // === 5. Reset UI tile ===
+        map.NotifyTileChanged(x, z);
 
         return true;
     }

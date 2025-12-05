@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections.Generic;
 
 public class HarvestTool : BaseTool
@@ -6,7 +6,7 @@ public class HarvestTool : BaseTool
     private readonly MapManager map;
     private readonly PlantManager plantManager;
 
-    // tránh x? lý l?p m?t ô khi kéo chu?t qua
+    // trï¿½nh x? lï¿½ l?p m?t ï¿½ khi kï¿½o chu?t qua
     private HashSet<Vector2Int> harvestedTiles = new HashSet<Vector2Int>();
 
     public HarvestTool(MapManager mapManager, PlantManager plantMgr)
@@ -35,21 +35,17 @@ public class HarvestTool : BaseTool
     private void TryHarvest(Vector2Int tilePos)
     {
         if (tilePos.x < 0) return;
-        if (harvestedTiles.Contains(tilePos)) return; // tránh x? lý l?i
+        if (harvestedTiles.Contains(tilePos)) return;
 
         harvestedTiles.Add(tilePos);
 
-        // ki?m tra có plant không
         var plant = plantManager.GetPlantAt(tilePos);
         if (plant == null) return;
 
-        // ki?m tra ?ã chín ch?a
         if (!plant.IsGrown()) return;
 
-        // th?c hi?n thu ho?ch
         plantManager.HarvestAt(tilePos.x, tilePos.y);
 
-        // c?p nh?t visual
         map.NotifyTileChanged(tilePos.x, tilePos.y);
     }
 }

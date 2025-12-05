@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd80aaab4a49bd4881fce3583c8ef89, type: 3}
-  m_Name: CabbageShopItem
+  m_Name: CarrotProduct
   m_EditorClassIdentifier: 
-  id: 2
-  itemName: Cabbage
-  icon: {fileID: 21300000, guid: 64a71a0bbe611d14f850cded6b4fa472, type: 3}
-  price: 200
-  description: Cabbage Description
-  itemType: 0
-  seedItem: {fileID: 11400000, guid: 590410dbae858704e8b87c2dbae4aeb2, type: 2}
+  id: 101
+  itemName: CarrotProduct
+  icon: {fileID: 21300000, guid: b2879ad1907270e47b6cd0faf7c7455a, type: 3}
+  price: 100
+  description: CarrotProduct
+  itemType: 4
+  seedItem: {fileID: 11400000, guid: 2256052b7dc471d49b3f4e522c3e9210, type: 2}
+  productItem: {fileID: 11400000, guid: 76847166f6f81da4ebe0b9418436fedc, type: 2}
   toolData:
     toolType: 0
     maxDurability: 0
