@@ -20,6 +20,5 @@ public class ShopItemData : ScriptableObject
     public ItemType itemType;
 
     public SeedItem seedItem;
-    public ProductItem productItem; // Dữ liệu sản phẩm (dùng cho ItemType.Consumable hoặc Other)
     public ToolData toolData;
 }

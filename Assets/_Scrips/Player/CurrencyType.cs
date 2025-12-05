@@ -1,5 +1,5 @@
 public enum CurrencyType
 {
     Coin,
-    Gem  // chÆ°a sÃ i
+    Gem   // sau này dùng
 }

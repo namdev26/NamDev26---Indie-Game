@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlantManager : MonoBehaviour
@@ -123,23 +123,9 @@ public class PlantManager : MonoBehaviour
         if (!plant.IsGrown())
             return false;
 
-        var drop = plant.Data.harvest;
-        if (drop != null)
-        {
-            // Nếu item thu hoạch là Seed, tạo product thay vì seed
-            ShopItemData itemToAdd = drop.item;
-            if (drop.item != null && drop.item.itemType == ItemType.Seed && drop.productItem != null)
-            {
-                itemToAdd = drop.productItem; // Sử dụng product thay vì seed
-            }
-            
-            Inventory.Instance.AddItem(itemToAdd, drop.quantity);
-        }
-
-        OnPlantHarvested?.Invoke(pos, drop?.quantity ?? 1);
+        OnPlantHarvested?.Invoke(pos, plant.GetHarvestStage());
 
         plants.Remove(pos);
-        map.TileMap.GetTile(pos.x, pos.y).hasPlant = false;
 
         if (plantObjects.TryGetValue(pos, out GameObject obj))
         {
@@ -147,9 +133,6 @@ public class PlantManager : MonoBehaviour
             plantObjects.Remove(pos);
         }
 
-        map.NotifyTileChanged(x, z);
-
         return true;
     }
-
 }

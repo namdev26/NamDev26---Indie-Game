@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: Cabbage
   m_EditorClassIdentifier: 
   plantName: Cabbage
-  harvest:
-    item: {fileID: 11400000, guid: a64ec5b25d33bb14898b1f61cbd506a3, type: 2}
-    quantity: 1
-    productItem: {fileID: 11400000, guid: a64ec5b25d33bb14898b1f61cbd506a3, type: 2}
   stages:
   - stageName: 1
     prefab: {fileID: 8222701873046046242, guid: 420c3d0447f8ba64588a7c833e010801, type: 3}

@@ -7,9 +7,6 @@ public class PlantInstance
     public float GrowthTimer { get; private set; }
     public Vector2Int Position { get; }
 
-    public int harvestItemId;
-    public int harvestQuantity;
-
     public bool CanHarvest => StageIndex >= Data.stages.Count - 1;
     public bool CanGrow => StageIndex < Data.stages.Count - 1;
 

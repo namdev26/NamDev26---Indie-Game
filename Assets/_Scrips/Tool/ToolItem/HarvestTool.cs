@@ -35,7 +35,7 @@ public class HarvestTool : BaseTool
     private void TryHarvest(Vector2Int tilePos)
     {
         if (tilePos.x < 0) return;
-        if (harvestedTiles.Contains(tilePos)) return;
+        if (harvestedTiles.Contains(tilePos)) return; // tránh x? lý l?i
 
         harvestedTiles.Add(tilePos);
 
