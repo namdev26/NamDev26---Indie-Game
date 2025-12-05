@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantName: Carrot
   harvest:
-    item: {fileID: 11400000, guid: 6f2e68c1b54a5714c8a46d26f1675e36, type: 2}
+    item: {fileID: 11400000, guid: b3355900801331144b91dd7b5fead4c9, type: 2}
     quantity: 1
-    productItem: {fileID: 11400000, guid: 6f2e68c1b54a5714c8a46d26f1675e36, type: 2}
+    productItem: {fileID: 11400000, guid: b3355900801331144b91dd7b5fead4c9, type: 2}
   stages:
   - stageName: 1
     prefab: {fileID: 1791515083459145459, guid: e40003ada0ef6c94a9577a0c57511a55, type: 3}

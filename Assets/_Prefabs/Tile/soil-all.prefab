@@ -117,7 +117,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fdf18c58b725a2f469593ece1786d307, type: 2}
+  - {fileID: 2100000, guid: 13ff6a4198f1ddd4aa99670435abf72a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -149,6 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7983577027255258710}
   - component: {fileID: 308274884033502263}
+  - component: {fileID: 3152286224254007228}
   m_Layer: 0
   m_Name: soil-all
   m_TagString: Untagged
@@ -186,3 +187,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+--- !u!114 &3152286224254007228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212098072332246255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208972f4297e19f459fca32e0b58bc97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dryColor: {r: 0.80784315, g: 0.7058824, b: 0.5176471, a: 1}
+  wetColor: {r: 0.42352942, g: 0.34117648, b: 0.22352941, a: 1}

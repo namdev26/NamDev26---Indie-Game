@@ -88,6 +88,10 @@ public class FarmUI : MonoBehaviour
                     Debug.Log("Tool: Scythe");
                     break;
 
+                case ToolType.WaterCan:
+                    map.SetTool(new WaterCanTool(map));
+                    Debug.Log("Tool: Watering Can");
+                    break;
                 default:
                     Debug.LogWarning("Unknown tool type!");
                     break;

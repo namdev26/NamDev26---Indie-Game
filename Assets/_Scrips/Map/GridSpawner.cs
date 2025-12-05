@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GridSpawner : MonoBehaviour
 {
@@ -37,8 +37,16 @@ public class GridSpawner : MonoBehaviour
         var go = Instantiate(grassPrefab, pos, Quaternion.identity, transform);
         tileObjects[x, z] = go;
 
-        map.TileMap.GetTile(x, z).type = TileType.Grass;
+        map.TileMap.SetTileObject(x, z, go);
+
+        var tileData = map.TileMap.GetTile(x, z);
+        tileData.type = TileType.Grass;
+
+        var renderer = go.GetComponent<TileRenderer>();
+        if (renderer != null)
+            renderer.Init(tileData);
     }
+
 
     public void SetTiletype(int x, int z, TileType type)
     {
@@ -48,6 +56,7 @@ public class GridSpawner : MonoBehaviour
 
     private void ReplaceTile(int x, int z, GameObject prefab, TileType type)
     {
+        // Xóa tile cũ
         if (tileObjects[x, z] != null)
             Destroy(tileObjects[x, z]);
 
@@ -60,6 +69,14 @@ public class GridSpawner : MonoBehaviour
         var go = Instantiate(prefab, pos, Quaternion.identity, transform);
         tileObjects[x, z] = go;
 
-        map.TileMap.GetTile(x, z).type = type;
+        map.TileMap.SetTileObject(x, z, go);
+
+        var tileData = map.TileMap.GetTile(x, z);
+        tileData.type = type;
+
+        var renderer = go.GetComponent<TileRenderer>();
+        if (renderer != null)
+            renderer.Init(tileData);
     }
+
 }

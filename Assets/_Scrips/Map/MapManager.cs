@@ -4,6 +4,10 @@ public class MapManager : MonoBehaviour
 {
     [SerializeField] private MapConfig config;
     [SerializeField] private Vector3 origin = Vector3.zero;
+    private float moistureDecayTime = 10f;
+
+
+    public static MapManager Instance { get; private set; }
 
     public MapConfig Config => config;
     public Vector3 Origin => origin;
@@ -17,6 +21,15 @@ public class MapManager : MonoBehaviour
 
     public event System.Action<int, int> OnTileChanged;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+    }
     private void Start()
     {
         mainCamera = Camera.main;
@@ -45,6 +58,8 @@ public class MapManager : MonoBehaviour
             Vector3 wp = TileToWorld(HoverTile.x, HoverTile.y);
             currentTool.OnPointerHold(wp);
         }
+
+        this.UpdateMoisture();
     }
 
     public void SetTool(BaseTool tool)
@@ -65,10 +80,19 @@ public class MapManager : MonoBehaviour
 
     public void NotifyTileChanged(int x, int z)
     {
-        var tile = TileMap.GetTile(x, z);
-        spawner.SetTiletype(x, z, tile.type);
+        var tileData = TileMap.GetTile(x, z);
+
+        spawner.SetTiletype(x, z, tileData.type);
+
+        var tileObj = TileMap.GetTileObject(x, z);
+        var renderer = tileObj.GetComponent<TileRenderer>();
+
+        renderer?.Init(tileData); 
+
         OnTileChanged?.Invoke(x, z);
     }
+
+
 
     private void UpdateHoverTile()
     {
@@ -91,4 +115,34 @@ public class MapManager : MonoBehaviour
 
         HoverTile = new Vector2Int(x, z);
     }
+
+    private void UpdateMoisture()
+    {
+        for (int x = 0; x < config.width; x++)
+        {
+            for (int z = 0; z < config.height; z++)
+            {
+                TileData tile = TileMap.GetTile(x, z);
+
+                if (tile.type != TileType.Soil)
+                    continue;
+
+                if (tile.moisture > 0f)
+                {
+                    // giảm moisture theo thời gian
+                    tile.moisture -= Time.deltaTime / moistureDecayTime;
+
+                    if (tile.moisture < 0f)
+                        tile.moisture = 0f;
+
+                    // cập nhật màu
+                    var tileObj = TileMap.GetTileObject(x, z);
+                    var renderer = tileObj.GetComponent<TileRenderer>();
+                    renderer.Refresh();
+                }
+            }
+        }
+    }
+
+
 }

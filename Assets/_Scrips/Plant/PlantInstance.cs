@@ -13,7 +13,6 @@ public class PlantInstance
     public bool CanHarvest => StageIndex >= Data.stages.Count - 1;
     public bool CanGrow => StageIndex < Data.stages.Count - 1;
 
-    // Giữ logic cũ
     public bool IsGrown() => StageIndex == Data.stages.Count - 1;
 
     public PlantInstance(PlantData data, Vector2Int position)
@@ -24,13 +23,28 @@ public class PlantInstance
         GrowthTimer = 0f;
     }
 
+    // ⭐ Lấy tốc độ từ moisture trong TileData
+    public float GetGrowthSpeed()
+    {
+        TileData tile = MapManager.Instance.TileMap.GetTile(Position.x, Position.y);
+
+        // moisture từ 0 → 1
+        float moisture = tile.moisture;
+
+        // tăng tốc độ theo độ ẩm
+        return 1f + moisture * 0.5f;   // nếu moisture = 1 → tốc độ = 1.5x
+    }
+
     public bool TryGrow(float deltaTime)
     {
         if (!CanGrow) return false;
 
-        GrowthTimer += deltaTime;
-        float required = Data.GetGrowthTime(StageIndex);
+        // ⭐ Áp dụng tăng tốc độ
+        float speed = GetGrowthSpeed();
 
+        GrowthTimer += deltaTime * speed;
+
+        float required = Data.GetGrowthTime(StageIndex);
         if (required <= 0f) return false;
 
         if (GrowthTimer >= required)
