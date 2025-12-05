@@ -9,11 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3582f691598feb488ed91b450509f72, type: 3}
+  m_Script: {fileID: 11500000, guid: ffd80aaab4a49bd4881fce3583c8ef89, type: 3}
   m_Name: CabbageSeed
   m_EditorClassIdentifier: 
-  seedName: Cabbage
-  icon: {fileID: 21300000, guid: 64a71a0bbe611d14f850cded6b4fa472, type: 3}
+  id: 2
+  itemName: Cabbage
+  icon: {fileID: 21300000, guid: 047b7000248118d43818385f6e3230f4, type: 3}
   price: 200
   description: Cabbage Description
-  plantData: {fileID: 11400000, guid: 0adc19c6b08237a44bf3894f96940e0b, type: 2}
+  itemType: 0
+  seedItem: {fileID: 11400000, guid: 590410dbae858704e8b87c2dbae4aeb2, type: 2}
+  productItem: {fileID: 0}
+  toolData:
+    toolType: 0
+    maxDurability: 0

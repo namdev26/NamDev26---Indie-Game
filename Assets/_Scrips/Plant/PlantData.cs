@@ -1,10 +1,22 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class HarvestDrop
+{
+    public ShopItemData item;
+    public int quantity;
+    [Header("Product (if harvest item is Seed, this product will be created instead)")]
+    public ShopItemData productItem; // Sản phẩm tương ứng khi thu hoạch
+}
+
+
 [CreateAssetMenu(fileName = "NewPlant", menuName = "Game/PlantData")]
 public class PlantData : ScriptableObject
 {
     public string plantName;
+
+    public HarvestDrop harvest;
 
     public List<PlantStageData> stages = new List<PlantStageData>();
 
