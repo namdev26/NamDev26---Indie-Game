@@ -20,7 +20,7 @@ public class ShovelTool : BaseTool
         if (tile == null) return;
 
         if (tile.HasPlant()) return;
-        FertilizerVisual.Instance.ClearDots(tilePos);
+        FertilizerVisual.Instance.ClearAll(tilePos);
 
         tile.Clear();
 

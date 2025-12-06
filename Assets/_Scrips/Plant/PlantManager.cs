@@ -150,7 +150,7 @@ public class PlantManager : MonoBehaviour
             plantObjects.Remove(pos);
         }
 
-        FertilizerVisual.Instance.ClearDots(pos);
+        FertilizerVisual.Instance.ClearAll(pos);
 
         // === 7. Cập nhật tile ===
         map.NotifyTileChanged(x, z);

@@ -9,36 +9,31 @@ public class FertilizerVisual : MonoBehaviour
     public GameObject speedDotPrefab;
     public GameObject yieldDotPrefab;
 
-    [Header("Số hạt tối đa sau khi bón")]
+    [Header("Số hạt mỗi loại")]
     public int dotCount = 5;
 
-    // Lưu danh sách hạt theo tile
-    private Dictionary<Vector2Int, List<GameObject>> dotsOnTile
-        = new Dictionary<Vector2Int, List<GameObject>>();
+    // Lưu theo tile → theo type → danh sách object
+    private Dictionary<Vector2Int, Dictionary<FertilizerType, List<GameObject>>> dotsOnTile
+        = new Dictionary<Vector2Int, Dictionary<FertilizerType, List<GameObject>>>();
 
     private void Awake()
     {
         Instance = this;
     }
 
-    // SPAWN DOTS TRÊN TILE
-    public void SpawnDots(Vector2Int tilePos, Vector3 tileCenter, FertilizerType type)
+    // =====================================================================
+    // SPAWN DOTS CHO LOẠI PHÂN CỤ THỂ
+    // =====================================================================
+    public void SpawnDots(Vector2Int tilePos, Vector3 center, FertilizerType type)
     {
-        ClearDots(tilePos);
+        // Nếu tile chưa có entry → tạo dictionary con
+        if (!dotsOnTile.ContainsKey(tilePos))
+            dotsOnTile[tilePos] = new Dictionary<FertilizerType, List<GameObject>>();
 
-        GameObject prefab = null;
+        // Nếu tile đã có hạt của riêng loại này → xoá trước (để không bị double)
+        ClearDots(tilePos, type);
 
-        switch (type)
-        {
-            case FertilizerType.Speed:
-                prefab = speedDotPrefab;
-                break;
-
-            case FertilizerType.Yield:
-                prefab = yieldDotPrefab;
-                break;
-        }
-
+        GameObject prefab = GetPrefab(type);
         if (prefab == null) return;
 
         List<GameObject> list = new List<GameObject>();
@@ -46,34 +41,53 @@ public class FertilizerVisual : MonoBehaviour
         for (int i = 0; i < dotCount; i++)
         {
             Vector3 offset = new Vector3(
-                Random.Range(-0.4f, 0.4f),
-                0.015f,
-                Random.Range(-0.4f, 0.4f)
+                Random.Range(-0.25f, 0.25f),
+                0.02f,
+                Random.Range(-0.25f, 0.25f)
             );
 
-            GameObject dot = Instantiate(prefab, tileCenter + offset, Quaternion.identity);
-
-            // random scale tạo cảm giác tự nhiên
-            dot.transform.localScale *= Random.Range(0.6f, 1f);
+            GameObject dot = Instantiate(prefab, center + offset, Quaternion.identity);
+            dot.transform.localScale *= Random.Range(0.7f, 1.2f);
 
             list.Add(dot);
         }
 
-        dotsOnTile[tilePos] = list;
+        dotsOnTile[tilePos][type] = list;
     }
 
-    // CLEAR DOTS KHI MẤT PHÂN
-    public void ClearDots(Vector2Int tilePos)
+    // =====================================================================
+    // CLEAR DOTS CHO MỘT LOẠI CỤ THỂ
+    // =====================================================================
+    public void ClearDots(Vector2Int tilePos, FertilizerType type)
     {
-        if (!dotsOnTile.ContainsKey(tilePos))
-            return;
+        if (!dotsOnTile.ContainsKey(tilePos)) return;
+        if (!dotsOnTile[tilePos].ContainsKey(type)) return;
 
-        foreach (var dot in dotsOnTile[tilePos])
-        {
-            if (dot != null)
-                Destroy(dot);
-        }
+        foreach (var dot in dotsOnTile[tilePos][type])
+            if (dot != null) Destroy(dot);
+
+        dotsOnTile[tilePos].Remove(type);
+    }
+
+    // CLEAR TẤT CẢ LOẠI PHÂN TRÊN TILE
+    public void ClearAll(Vector2Int tilePos)
+    {
+        if (!dotsOnTile.ContainsKey(tilePos)) return;
+
+        foreach (var kv in dotsOnTile[tilePos])
+            foreach (var dot in kv.Value)
+                if (dot != null) Destroy(dot);
 
         dotsOnTile.Remove(tilePos);
+    }
+
+    private GameObject GetPrefab(FertilizerType type)
+    {
+        switch (type)
+        {
+            case FertilizerType.Speed: return speedDotPrefab;
+            case FertilizerType.Yield: return yieldDotPrefab;
+        }
+        return null;
     }
 }
