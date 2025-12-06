@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd80aaab4a49bd4881fce3583c8ef89, type: 3}
   m_Name: CarrotShopItem
   m_EditorClassIdentifier: 
-  id: 1
+  id: carrot-seed
   itemName: Carrot
   icon: {fileID: 21300000, guid: c5a182ba4298b0144a77bee76fe8fe65, type: 3}
   price: 100

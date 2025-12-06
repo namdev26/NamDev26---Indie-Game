@@ -5,7 +5,8 @@ public enum ItemType
     Seed,
     Crop,
     Tool,
-    Consumable
+    Consumable,
+    Fertilizer
 }
 
 
@@ -23,4 +24,6 @@ public class ShopItemData : ScriptableObject
     public SeedItem seedItem;
     public ProductItem productItem;
     public ToolData toolData;
+
+    public FertilizerType fertilizerType = FertilizerType.None;
 }

@@ -37,6 +37,17 @@ public class TileRenderer : MonoBehaviour
             mat.SetColor("_BaseColor", Color.white);
             return;
         }
+        // fertilizer speed color tint
+        if (data.fertilizerSpeed > 0f)
+        {
+            mat.SetColor("_BaseColor", Color.blue);
+        }
+
+        // fertilizer yield color tint
+        if (data.fertilizerYield > 0f)
+        {
+            mat.SetColor("_BaseColor", Color.black);
+        }
 
         Color c = Color.Lerp(dryColor, wetColor, data.moisture);
         mat.SetColor("_BaseColor", c);

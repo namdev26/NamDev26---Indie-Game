@@ -15,16 +15,15 @@ MonoBehaviour:
   plantName: Carrot
   harvest:
     item: {fileID: 11400000, guid: b3355900801331144b91dd7b5fead4c9, type: 2}
-    quantity: 1
+    quantity: 10
     productItem: {fileID: 11400000, guid: b3355900801331144b91dd7b5fead4c9, type: 2}
   stages:
   - stageName: 1
     prefab: {fileID: 1791515083459145459, guid: e40003ada0ef6c94a9577a0c57511a55, type: 3}
-    growthTime: 1
+    growthTime: 10
   - stageName: 2
     prefab: {fileID: 3111383673402725249, guid: eef06a305eb390747bea64e1ddf04508, type: 3}
-    growthTime: 2
+    growthTime: 20
   - stageName: 3
     prefab: {fileID: 3121110608562062268, guid: 887bb655928d3fd4fb37f6a25c491456, type: 3}
-    growthTime: 3
-  harvestAmount: 1
+    growthTime: 30

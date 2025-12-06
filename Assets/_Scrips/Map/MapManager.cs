@@ -4,8 +4,7 @@ public class MapManager : MonoBehaviour
 {
     [SerializeField] private MapConfig config;
     [SerializeField] private Vector3 origin = Vector3.zero;
-    private float moistureDecayTime = 10f;
-
+    [SerializeField] private float moistureDecayTime = 10f;
 
     public static MapManager Instance { get; private set; }
 

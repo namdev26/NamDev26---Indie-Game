@@ -7,6 +7,7 @@ public class HarvestDrop
 {
     public ShopItemData item;
     public int quantity;
+
     [Header("Product (if harvest item is Seed, this product will be created instead)")]
     public ShopItemData productItem; // Sản phẩm tương ứng khi thu hoạch
 }
@@ -19,8 +20,6 @@ public class PlantData : ScriptableObject
     public HarvestDrop harvest;
 
     public List<PlantStageData> stages = new List<PlantStageData>();
-
-    public int harvestAmount = 1;
 
     public PlantStageData GetStage(int index)
     {

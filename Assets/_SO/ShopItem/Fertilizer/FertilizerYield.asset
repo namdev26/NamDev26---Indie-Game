@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd80aaab4a49bd4881fce3583c8ef89, type: 3}
-  m_Name: HoeShopItem
+  m_Name: FertilizerYield
   m_EditorClassIdentifier: 
-  id: hoe-tool
-  itemName: Hoe
-  icon: {fileID: 21300000, guid: b7ee947868dbadd47ab4eafff448ef1f, type: 3}
-  price: 500
-  description: Hoe Des
-  itemType: 2
+  id: speed-yield
+  itemName: FertilizerYield
+  icon: {fileID: 21300000, guid: 706c9c047c8264a489631912ae5d45f1, type: 3}
+  price: 100
+  description: FertilizerYield
+  itemType: 4
   seedItem: {fileID: 0}
   productItem: {fileID: 0}
   toolData:
     toolType: 0
-    maxDurability: 100
+    maxDurability: 0
+  fertilizerType: 2

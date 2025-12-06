@@ -122,28 +122,37 @@ public class PlantManager : MonoBehaviour
         if (!plant.IsGrown())
             return false;
 
-        // === 1. Thêm vào kho đồ ===
+        var tile = map.TileMap.GetTile(pos.x, pos.y);
         var drop = plant.Data.harvest;
-        if (drop != null)
-        {
-            Inventory.Instance.AddItem(drop.item, drop.quantity);
-        }
 
-        // === 2. Gửi event ===
-        OnPlantHarvested?.Invoke(pos, drop?.quantity ?? 1);
+        // === 1. Tính số lượng thu hoạch có áp dụng Yield Fertilizer ===
+        int finalQty = plant.GetFinalHarvestQuantity();
 
-        // === 3. Xóa khỏi dictionary ===
+        // === 2. Thêm vào kho đồ ===
+        if (drop != null && drop.item != null)
+            Inventory.Instance.AddItem(drop.item, finalQty);
+
+        // === 3. Event thu hoạch
+        OnPlantHarvested?.Invoke(pos, finalQty);
+
+        // === 4. Xóa dữ liệu cây ===
         plants.Remove(pos);
-        map.TileMap.GetTile(pos.x, pos.y).hasPlant = false;
+        tile.hasPlant = false;
 
-        // === 4. Xóa object visual ===
+        // === 5. Reset phân bón sau vụ này ===
+        tile.fertilizerYield = 0f;
+        tile.fertilizerSpeed = 0f;
+
+        // === 6. Xóa visual ===
         if (plantObjects.TryGetValue(pos, out GameObject obj))
         {
-            GameObject.Destroy(obj);
+            Destroy(obj);
             plantObjects.Remove(pos);
         }
 
-        // === 5. Reset UI tile ===
+        FertilizerVisual.Instance.ClearDots(pos);
+
+        // === 7. Cập nhật tile ===
         map.NotifyTileChanged(x, z);
 
         return true;

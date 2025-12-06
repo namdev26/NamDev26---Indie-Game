@@ -50,6 +50,10 @@ public class Inventory : MonoBehaviour
                 result = true;
                 break;
 
+            case ItemType.Fertilizer:
+                result = UseFertilizer(invItem);
+                break;
+
             default:
                 result = Consume(invItem);
                 break;
@@ -60,6 +64,9 @@ public class Inventory : MonoBehaviour
         return result;
     }
 
+    // ============================
+    //          SEEDS
+    // ============================
     private bool UseSeed(InventoryItem invItem)
     {
         if (invItem.itemData.seedItem == null)
@@ -76,12 +83,40 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    // ============================
+    //     GENERIC CONSUMABLES
+    // ============================
     private bool Consume(InventoryItem invItem)
     {
         invItem.quantity--;
 
         if (invItem.quantity <= 0)
             items.Remove(invItem);
+
+        return true;
+    }
+
+    // ============================
+    //       FERTILIZER LOGIC
+    // ============================
+    private bool UseFertilizer(InventoryItem invItem)
+    {
+        // Determine what fertilizer type the item represents
+        var fertType = invItem.itemData.fertilizerType;
+
+        if (fertType == FertilizerType.None)
+        {
+            Debug.LogError("Invalid fertilizer type!");
+            return false;
+        }
+
+        // Consume 1 fertilizer
+        invItem.quantity--;
+        if (invItem.quantity <= 0)
+            items.Remove(invItem);
+
+        // Equip fertilizer tool
+        FarmUI.Instance.SelectFertilizerTool(fertType);
 
         return true;
     }
@@ -94,4 +129,5 @@ public class Inventory : MonoBehaviour
 
         return false;
     }
+
 }

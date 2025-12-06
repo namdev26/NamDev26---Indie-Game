@@ -1062,9 +1062,9 @@ RectTransform:
   - {fileID: 7098118995579971054}
   m_Father: {fileID: 141813849}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 66}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -342.06, y: 66}
   m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &254617233
@@ -3617,6 +3617,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cbe40625b40f46e48b93172b0564aa89, type: 2}
   - {fileID: 11400000, guid: 1855d3634e33b1b41bbddd5f7311729c, type: 2}
   - {fileID: 11400000, guid: 9c6f92ef0df55304c9317dfbb14fa784, type: 2}
+  - {fileID: 11400000, guid: 1efa7058860644e4f877a1750b74d93c, type: 2}
+  - {fileID: 11400000, guid: 0c5f80c96218a4a4d9833804bd9de15d, type: 2}
   itemsGridParent: {fileID: 1877114151}
   shopItemPrefab: {fileID: 5002434762815158040, guid: 5355dd8bcc762bc4cbc28165cf70e167, type: 3}
   detailIcon: {fileID: 1086737907}
@@ -5398,6 +5400,12 @@ MonoBehaviour:
     quantity: 99
     durability: 0
   - itemData: {fileID: 11400000, guid: 6f2e68c1b54a5714c8a46d26f1675e36, type: 2}
+    quantity: 99
+    durability: 0
+  - itemData: {fileID: 11400000, guid: 1efa7058860644e4f877a1750b74d93c, type: 2}
+    quantity: 99
+    durability: 0
+  - itemData: {fileID: 11400000, guid: 0c5f80c96218a4a4d9833804bd9de15d, type: 2}
     quantity: 99
     durability: 0
 --- !u!1 &1157918676
@@ -7211,6 +7219,7 @@ GameObject:
   - component: {fileID: 1658233112}
   - component: {fileID: 1658233114}
   - component: {fileID: 1658233115}
+  - component: {fileID: 1658233116}
   m_Layer: 0
   m_Name: Map Manager
   m_TagString: Untagged
@@ -7232,6 +7241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 098539f3464c4f44abe04e2979df66a6, type: 2}
   origin: {x: 0, y: 0, z: 0}
+  moistureDecayTime: 30
 --- !u!4 &1658233113
 Transform:
   m_ObjectHideFlags: 0
@@ -7279,6 +7289,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grassPrefab: {fileID: 5212098072332246255, guid: 92e6c5ff5f2875141a72eca02cad1c21, type: 3}
   soilPrefab: {fileID: 5212098072332246255, guid: dc8841bdfad8559409502a60375b6730, type: 3}
+--- !u!114 &1658233116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658233111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b97b70d586d87b644bb5ac2cf6af1f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedDotPrefab: {fileID: 1432613798252008913, guid: 68ba43c2ece6a9f4f91d5a5f360dcc88, type: 3}
+  yieldDotPrefab: {fileID: 4036450292228321382, guid: 6e8778e2c084099489cfe8cf06878d8d, type: 3}
+  dotCount: 5
 --- !u!1 &1662305059
 GameObject:
   m_ObjectHideFlags: 0

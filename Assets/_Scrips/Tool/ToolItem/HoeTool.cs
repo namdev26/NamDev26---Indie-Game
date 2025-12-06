@@ -21,6 +21,9 @@ public class HoeTool : BaseTool
         var tile = map.TileMap.GetTile(tilePos.x, tilePos.y);
         tile.SetSoil();
 
+        FertilizerVisual.Instance.ClearDots(tilePos);
+
+
         map.NotifyTileChanged(tilePos.x, tilePos.y);
     }
 }

@@ -5,3 +5,17 @@
     Sickle,     // Liềm thu hoạch
     WaterCan    // Tưới cây
 }
+
+
+public enum FertilizerType
+{
+    None,
+    Speed,
+    Yield
+}
+
+public enum CurrencyType
+{
+    Coin,
+    Gem
+}
